@@ -62,7 +62,7 @@
 
 .btn--soft {
   --btn-bg: var(--accent-soft);
-  --btn-fg: var(--accent);
+  --btn-fg: var(--accent-soft-ink);
   --btn-line: var(--accent-line);
   --btn-shadow: none;
 }
@@ -83,7 +83,7 @@
 
 .btn--danger {
   --btn-bg: var(--danger);
-  --btn-fg: #fff;
+  --btn-fg: var(--danger-ink);
   --btn-line: var(--danger);
 }
 
@@ -164,11 +164,11 @@
 
 .badge--plain::before { display: none; }
 
-.badge--success { background: var(--success-soft); color: var(--success); }
-.badge--warning { background: var(--warning-soft); color: var(--warning); }
-.badge--danger  { background: var(--danger-soft);  color: var(--danger); }
-.badge--info    { background: var(--info-soft);    color: var(--info); }
-.badge--accent  { background: var(--accent-soft);  color: var(--accent); }
+.badge--success { background: var(--success-soft); color: var(--success-soft-ink); }
+.badge--warning { background: var(--warning-soft); color: var(--warning-soft-ink); }
+.badge--danger  { background: var(--danger-soft);  color: var(--danger-soft-ink); }
+.badge--info    { background: var(--info-soft);    color: var(--info-soft-ink); }
+.badge--accent  { background: var(--accent-soft);  color: var(--accent-soft-ink); }
 
 .badge--dot::before {
   animation: pulse 2s var(--ease-in-out) infinite;
@@ -198,11 +198,12 @@
 .chip.is-selected {
   background: var(--accent-soft);
   border-color: var(--accent-line);
-  color: var(--accent);
+  color: var(--accent-soft-ink);
   font-weight: var(--fw-bold);
 }
 
 .chip__close {
+  --icon-size: 12px;
   display: grid;
   place-items: center;
   width: 18px;
@@ -227,7 +228,7 @@
   height: var(--size);
   border-radius: 50%;
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-soft-ink);
   font-family: var(--font-hand);
   font-weight: var(--fw-bold);
   font-size: calc(var(--size) * .4);
@@ -295,13 +296,6 @@
 .card--sunken {
   background: var(--bg-sunken);
   box-shadow: none;
-}
-
-.card--accent {
-  border-color: var(--accent-line);
-  background:
-    linear-gradient(160deg, var(--accent-soft), transparent 70%),
-    var(--bg-raised);
 }
 
 .card__media {
@@ -626,6 +620,7 @@ a.list__item:hover,
 }
 
 .step__dot {
+  --icon-size: 16px;
   position: relative;
   z-index: 1;
   flex: none;
@@ -645,7 +640,7 @@ a.list__item:hover,
 .step--done .step__dot {
   border-color: var(--success);
   background: var(--success-soft);
-  color: var(--success);
+  color: var(--success-soft-ink);
 }
 
 .step--current .step__dot {
@@ -755,6 +750,7 @@ a.list__item:hover,
 .alert--danger  { background: var(--danger-soft);  border-color: color-mix(in oklab, var(--danger) 30%, transparent); }
 
 .alert__icon {
+  --icon-size: 14px;
   flex: none;
   width: 20px;
   height: 20px;
@@ -767,10 +763,10 @@ a.list__item:hover,
   background: var(--accent);
 }
 
-.alert--info .alert__icon    { background: var(--info); }
-.alert--success .alert__icon { background: var(--success); }
-.alert--warning .alert__icon { background: var(--warning); }
-.alert--danger .alert__icon  { background: var(--danger); }
+.alert--info .alert__icon    { background: var(--info);    color: var(--info-ink); }
+.alert--success .alert__icon { background: var(--success); color: var(--success-ink); }
+.alert--warning .alert__icon { background: var(--warning); color: var(--warning-ink); }
+.alert--danger .alert__icon  { background: var(--danger);  color: var(--danger-ink); }
 
 .alert__title {
   font-family: var(--font-hand);
@@ -896,6 +892,7 @@ a.list__item:hover,
 }
 
 .empty__art {
+  --icon-size: 34px;
   display: grid;
   place-items: center;
   width: 88px;

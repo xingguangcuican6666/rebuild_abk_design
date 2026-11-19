@@ -41,7 +41,7 @@
       <span class="badge badge--accent badge--dot">HTML + CSS + JS</span>
       <button class="icon-btn" type="button" data-abk-theme-toggle
               aria-label="切换深色模式" data-label-dark="切换为深色" data-label-light="切换为浅色">
-        <span data-abk-theme-icon data-icon-dark="☾" data-icon-light="☀" aria-hidden="true">☀</span>
+        <span data-abk-theme-icon data-abk-icon="moon" data-icon-dark="☾" data-icon-light="☀" aria-hidden="true">☾</span>
       </button>
     </div>
   </div>
@@ -55,11 +55,11 @@
     <h1 class="hero__title">像写在纸上的界面</h1>
     <p class="hero__desc">
       这套组件刻意留白，不做满。手写体承担标题和情绪，正文保持清晰的阅读节奏；
-      颜色只有朱砂一个强调色，其余全是纸白与墨色的层次。
+      全页采用 Material You 动态配色。在「设计变量」更换种子色，就能看到同一套组件如何随之变化。
       所有组件先在这里用网页定稿，随后 1:1 翻译成 Kotlin / Compose。
     </p>
     <div class="cluster" style="margin-top: var(--sp-5)">
-      <a class="btn btn--primary" href="#buttons">从按钮开始 <span aria-hidden="true">→</span></a>
+      <a class="btn btn--primary" href="#buttons">从按钮开始 <span data-abk-icon="arrow-right" aria-hidden="true">→</span></a>
       <a class="btn btn--outline" href="#tokens">查看设计变量</a>
       <button class="btn btn--ghost" type="button" data-abk-toast="组件库已就绪" data-abk-toast-type="success">
         试一下提示
@@ -123,17 +123,26 @@
         <div class="section__head">
           <h2 class="section__title"><span class="section__index">01</span>设计变量</h2>
           <p class="section__desc">
-            颜色、间距、圆角、动效都定义在 <code>tokens.css</code>。组件里不写魔法值，
-            改一处即可换肤；深浅色只是同一组语义变量的另一套取值。
+            Material You 从同一个种子色生成浅色与深色。更换种子会立即更新全页配色，
+            明暗仍由右上角的按钮单独控制。
           </p>
         </div>
 
         <div class="demo-block">
-          <p class="demo-label">颜色 · 跟随主题切换</p>
+          <div class="field">
+            <label class="field__label" for="demo-palette-seed">种子颜色</label>
+            <input class="palette-seed" id="demo-palette-seed" type="color" value="#496a78" aria-describedby="demo-palette-hint" disabled>
+            <p class="field__hint" id="demo-palette-hint">直接选择颜色；网页不读取系统壁纸。</p>
+          </div>
+          <p class="field__hint palette-status" id="demo-palette-status" role="status"></p>
+        </div>
+
+        <div class="demo-block">
+          <p class="demo-label">当前配色 · 颜色角色</p>
           <div class="swatches">
             <div class="swatch">
               <div class="swatch__color" style="--swatch: var(--bg)"></div>
-              <div class="swatch__body"><span class="swatch__name">纸白</span><code class="swatch__token">--bg</code></div>
+              <div class="swatch__body"><span class="swatch__name">页面底色</span><code class="swatch__token">--bg</code></div>
             </div>
             <div class="swatch">
               <div class="swatch__color" style="--swatch: var(--bg-raised)"></div>
@@ -149,7 +158,7 @@
             </div>
             <div class="swatch">
               <div class="swatch__color" style="--swatch: var(--accent)"></div>
-              <div class="swatch__body"><span class="swatch__name">朱砂</span><code class="swatch__token">--accent</code></div>
+              <div class="swatch__body"><span class="swatch__name">主强调色</span><code class="swatch__token">--accent</code></div>
             </div>
             <div class="swatch">
               <div class="swatch__color" style="--swatch: var(--success)"></div>
@@ -252,30 +261,49 @@
         <div class="section__head">
           <h2 class="section__title"><span class="section__index">03</span>图标</h2>
           <p class="section__desc">
-            网页阶段用文字符号占位，移植 Kotlin 时替换为 Material Symbols。
-            统一 20–24px，线与文字同色，仅在选中态使用强调色。
+            四套本地 SVG 图标用于对照，选择器会同步更新整页图标；当前尚未定稿。
+            图标跟随文字颜色，底部导航保持等权，不用填充或放大突出入口。
           </p>
+        </div>
+        <div class="demo-block demo-icon-picker">
+          <div class="field">
+            <label class="field__label" for="demo-icon-library">图标库</label>
+            <select class="select" id="demo-icon-library" data-demo-icon-library aria-describedby="demo-icon-hint demo-icon-status" disabled>
+              <option value="lucide">Lucide</option>
+              <option value="tabler">Tabler Outline</option>
+              <option value="phosphor">Phosphor Regular</option>
+              <option value="material">Material Symbols Rounded</option>
+            </select>
+            <p class="field__hint" id="demo-icon-hint">切换整页图标，不改变配色或布局。页面示例上方也可切换。</p>
+            <p class="field__hint" id="demo-icon-status" data-demo-icon-status role="status">图标选择器尚未就绪；脚本不可用时显示备用图标。</p>
+          </div>
         </div>
         <div class="demo-surface demo-surface--plain">
           <div class="icon-set">
-            <div class="icon-cell"><span aria-hidden="true">⌂</span><span>home</span></div>
-            <div class="icon-cell"><span aria-hidden="true">⌕</span><span>search</span></div>
-            <div class="icon-cell"><span aria-hidden="true">✎</span><span>edit</span></div>
-            <div class="icon-cell"><span aria-hidden="true">＋</span><span>add</span></div>
-            <div class="icon-cell"><span aria-hidden="true">↺</span><span>refresh</span></div>
-            <div class="icon-cell"><span aria-hidden="true">↥</span><span>upload</span></div>
-            <div class="icon-cell"><span aria-hidden="true">↧</span><span>download</span></div>
-            <div class="icon-cell"><span aria-hidden="true">⚙</span><span>settings</span></div>
-            <div class="icon-cell"><span aria-hidden="true">☰</span><span>menu</span></div>
-            <div class="icon-cell"><span aria-hidden="true">⋮</span><span>more</span></div>
-            <div class="icon-cell"><span aria-hidden="true">✓</span><span>check</span></div>
-            <div class="icon-cell"><span aria-hidden="true">✕</span><span>close</span></div>
-            <div class="icon-cell"><span aria-hidden="true">‹</span><span>back</span></div>
-            <div class="icon-cell"><span aria-hidden="true">›</span><span>forward</span></div>
-            <div class="icon-cell"><span aria-hidden="true">☾</span><span>dark</span></div>
-            <div class="icon-cell"><span aria-hidden="true">☀</span><span>light</span></div>
-            <div class="icon-cell"><span aria-hidden="true">⌛</span><span>pending</span></div>
-            <div class="icon-cell"><span aria-hidden="true">⚠</span><span>warning</span></div>
+            <div class="icon-cell"><span data-abk-icon="home" aria-hidden="true">⌂</span><span class="icon-cell__name">home</span></div>
+            <div class="icon-cell"><span data-abk-icon="search" aria-hidden="true">⌕</span><span class="icon-cell__name">search</span></div>
+            <div class="icon-cell"><span data-abk-icon="edit" aria-hidden="true">✎</span><span class="icon-cell__name">edit</span></div>
+            <div class="icon-cell"><span data-abk-icon="plus" aria-hidden="true">＋</span><span class="icon-cell__name">add</span></div>
+            <div class="icon-cell"><span data-abk-icon="refresh" aria-hidden="true">↺</span><span class="icon-cell__name">refresh</span></div>
+            <div class="icon-cell"><span data-abk-icon="upload" aria-hidden="true">↥</span><span class="icon-cell__name">upload</span></div>
+            <div class="icon-cell"><span data-abk-icon="download" aria-hidden="true">↧</span><span class="icon-cell__name">download</span></div>
+            <div class="icon-cell"><span data-abk-icon="settings" aria-hidden="true">⚙</span><span class="icon-cell__name">settings</span></div>
+            <div class="icon-cell"><span data-abk-icon="menu" aria-hidden="true">☰</span><span class="icon-cell__name">menu</span></div>
+            <div class="icon-cell"><span data-abk-icon="more" aria-hidden="true">⋮</span><span class="icon-cell__name">more</span></div>
+            <div class="icon-cell"><span data-abk-icon="check" aria-hidden="true">✓</span><span class="icon-cell__name">check</span></div>
+            <div class="icon-cell"><span data-abk-icon="close" aria-hidden="true">✕</span><span class="icon-cell__name">close</span></div>
+            <div class="icon-cell"><span data-abk-icon="back" aria-hidden="true">‹</span><span class="icon-cell__name">back</span></div>
+            <div class="icon-cell"><span data-abk-icon="forward" aria-hidden="true">›</span><span class="icon-cell__name">forward</span></div>
+            <div class="icon-cell"><span data-abk-icon="moon" aria-hidden="true">☾</span><span class="icon-cell__name">dark</span></div>
+            <div class="icon-cell"><span data-abk-icon="sun" aria-hidden="true">☀</span><span class="icon-cell__name">light</span></div>
+            <div class="icon-cell"><span data-abk-icon="pending" aria-hidden="true">⌛</span><span class="icon-cell__name">pending</span></div>
+            <div class="icon-cell"><span data-abk-icon="warning" aria-hidden="true">⚠</span><span class="icon-cell__name">warning</span></div>
+            <div class="icon-cell"><span data-abk-icon="build" aria-hidden="true">□</span><span class="icon-cell__name">build</span></div>
+            <div class="icon-cell"><span data-abk-icon="modules" aria-hidden="true">▦</span><span class="icon-cell__name">modules</span></div>
+            <div class="icon-cell"><span data-abk-icon="cpu" aria-hidden="true">▣</span><span class="icon-cell__name">cpu</span></div>
+            <div class="icon-cell"><span data-abk-icon="terminal" aria-hidden="true">&gt;_</span><span class="icon-cell__name">terminal</span></div>
+            <div class="icon-cell"><span data-abk-icon="controls" aria-hidden="true">☷</span><span class="icon-cell__name">controls</span></div>
+            <div class="icon-cell"><span data-abk-icon="trash" aria-hidden="true">×</span><span class="icon-cell__name">delete</span></div>
           </div>
         </div>
       </section>
@@ -310,8 +338,8 @@
             <button class="btn btn--primary btn--lg" type="button">大号</button>
             <button class="btn" type="button" disabled>禁用</button>
             <button class="btn btn--primary" type="button" data-loading="true">保存中</button>
-            <button class="btn btn--icon" type="button" aria-label="刷新" data-tip="刷新">↺</button>
-            <button class="btn btn--icon btn--sm" type="button" aria-label="更多" data-tip="更多">⋮</button>
+            <button class="btn btn--icon" type="button" aria-label="刷新" data-tip="刷新"><span data-abk-icon="refresh" aria-hidden="true">↺</span></button>
+            <button class="btn btn--icon btn--sm" type="button" aria-label="更多" data-tip="更多"><span data-abk-icon="more" aria-hidden="true">⋮</span></button>
           </div>
         </div>
 
@@ -347,7 +375,7 @@
             <div class="field">
               <label class="field__label" for="f-search">搜索 <span class="optional">可选</span></label>
               <div class="input-group">
-                <span class="input-group__icon" aria-hidden="true">⌕</span>
+                <span class="input-group__icon" data-abk-icon="search" aria-hidden="true">⌕</span>
                 <input class="input" id="f-search" type="search" placeholder="搜索模块、补丁或提交">
                 <span class="input-group__suffix"><kbd>/</kbd></span>
               </div>
@@ -403,7 +431,7 @@
 
         <div class="demo-grid-2">
           <div class="demo-surface demo-surface--plain">
-            <p class="demo-kicker">勾选与单选</p>
+            <p class="demo-label">勾选与单选</p>
             <div class="stack stack--sm">
               <label class="check"><input type="checkbox" checked><span class="check__box"></span><span class="check__label">启用 SUSFS</span></label>
               <label class="check"><input type="checkbox"><span class="check__box"></span><span class="check__label">启用 BBG 防格机</span></label>
@@ -418,7 +446,7 @@
           </div>
 
           <div class="demo-surface demo-surface--plain">
-            <p class="demo-kicker">开关</p>
+            <p class="demo-label">开关</p>
             <label class="switch"><input type="checkbox" checked><span class="switch__track"><span class="switch__thumb"></span></span><span class="switch__label">自动重试</span></label>
             <div style="height:var(--sp-3)"></div>
             <label class="switch switch--sm"><input type="checkbox"><span class="switch__track"><span class="switch__thumb"></span></span><span class="switch__label">小号</span></label>
@@ -518,13 +546,13 @@
           <p class="demo-label">顶部栏</p>
           <div class="demo-surface" style="padding:0;overflow:hidden">
             <div class="appbar" style="position:static">
-              <button class="icon-btn" type="button" aria-label="返回">‹</button>
+              <button class="icon-btn" type="button" aria-label="返回"><span data-abk-icon="back" aria-hidden="true">‹</span></button>
               <div class="appbar__title">
                 构建设置
                 <span class="appbar__subtitle">NyaSU · android15-6.6</span>
               </div>
               <div class="appbar__actions">
-                <button class="icon-btn" type="button" aria-label="更多">⋮</button>
+                <button class="icon-btn" type="button" aria-label="更多"><span data-abk-icon="more" aria-hidden="true">⋮</span></button>
               </div>
             </div>
           </div>
@@ -551,15 +579,16 @@
         <div class="demo-block">
           <p class="demo-label">底部导航</p>
           <div class="demo-phone">
-            <div class="demo-phone__screen" style="min-height:180px;justify-content:flex-end;padding:0">
-              <nav class="bottom-nav" style="position:static" aria-label="主导航">
-                <a class="bottom-nav__item is-active" href="#navigation"><span class="bottom-nav__icon" aria-hidden="true">⌂</span>首页</a>
-                <a class="bottom-nav__item" href="#navigation"><span class="bottom-nav__icon" aria-hidden="true">⌕</span>搜索</a>
-                <a class="bottom-nav__item bottom-nav__item--fab" href="#navigation"><span class="bottom-nav__icon" aria-hidden="true">＋</span>新建</a>
-                <a class="bottom-nav__item" href="#navigation"><span class="bottom-nav__icon" aria-hidden="true">↺</span>任务</a>
-                <a class="bottom-nav__item" href="#navigation"><span class="bottom-nav__icon" aria-hidden="true">⚙</span>设置</a>
-              </nav>
-            </div>
+            <nav class="bottom-nav bottom-nav--inline" aria-label="底部导航示例">
+              <a class="bottom-nav__item" href="#screen-build">
+                <span class="bottom-nav__icon" data-abk-icon="build" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M6 7l2-3h8l2 3M5 7v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7m-9 6h4"/></svg></span>
+                构建
+              </a>
+              <a class="bottom-nav__item" href="#screen-modules">
+                <span class="bottom-nav__icon" data-abk-icon="modules" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></span>
+                模块
+              </a>
+            </nav>
           </div>
         </div>
 
@@ -607,7 +636,7 @@
               </div>
             </article>
 
-            <article class="card card--accent">
+            <article class="card">
               <div class="card__header">
                 <div>
                   <h3 class="card__title">构建中</h3>
@@ -629,7 +658,7 @@
                   <p class="card__desc">悬停会轻微上浮并歪一点点，像被手指按住的纸片。</p>
                 </div>
               </div>
-              <span class="text-sm text-accent">打开 →</span>
+              <span class="text-sm text-accent">打开 <span data-abk-icon="arrow-right" aria-hidden="true">→</span></span>
             </button>
           </div>
         </div>
@@ -644,7 +673,7 @@
                 <span class="list__desc">隐藏挂载点与内核特征</span>
               </span>
               <span class="badge badge--success">已启用</span>
-              <span class="list__chevron" aria-hidden="true">›</span>
+              <span class="list__chevron" data-abk-icon="forward" aria-hidden="true">›</span>
             </button>
             <button class="list__item" type="button">
               <span class="avatar avatar--sm" aria-hidden="true">Z</span>
@@ -653,7 +682,7 @@
                 <span class="list__desc">完整算法支持</span>
               </span>
               <span class="badge">已禁用</span>
-              <span class="list__chevron" aria-hidden="true">›</span>
+              <span class="list__chevron" data-abk-icon="forward" aria-hidden="true">›</span>
             </button>
             <button class="list__item" type="button">
               <span class="avatar avatar--sm" aria-hidden="true">K</span>
@@ -662,7 +691,7 @@
                 <span class="list__desc">内核模块加载器</span>
               </span>
               <span class="list__meta">v2.1.0</span>
-              <span class="list__chevron" aria-hidden="true">›</span>
+              <span class="list__chevron" data-abk-icon="forward" aria-hidden="true">›</span>
             </button>
           </div>
         </div>
@@ -673,7 +702,7 @@
             <div class="accordion__item is-open">
               <button class="accordion__trigger" type="button" aria-expanded="true" aria-controls="acc-1">
                 为什么构建失败了？
-                <span class="accordion__marker" aria-hidden="true">＋</span>
+                <span class="accordion__marker" data-abk-icon="plus" aria-hidden="true">＋</span>
               </button>
               <div class="accordion__panel" id="acc-1">
                 常见原因是源码分支与 AOSP manifest 月份不匹配。请检查 <code>os_patch_level</code>，
@@ -683,7 +712,7 @@
             <div class="accordion__item">
               <button class="accordion__trigger" type="button" aria-expanded="false" aria-controls="acc-2">
                 如何固定 SDK 版本？
-                <span class="accordion__marker" aria-hidden="true">＋</span>
+                <span class="accordion__marker" data-abk-icon="plus" aria-hidden="true">＋</span>
               </button>
               <div class="accordion__panel" id="acc-2" hidden>
                 在模块配置里指定 ref 即可。默认跟随上游，设计上保持前向兼容。
@@ -728,13 +757,13 @@
 
         <div class="demo-grid-2">
           <div class="demo-surface demo-surface--plain">
-            <p class="demo-kicker">键值</p>
+            <p class="demo-label">键值</p>
             <div class="kv"><span class="kv__key">内核版本</span><span class="kv__value">6.6.30-android15</span></div>
             <div class="kv"><span class="kv__key">补丁月份</span><span class="kv__value">2025-09</span></div>
             <div class="kv"><span class="kv__key">Manager 哈希</span><span class="kv__value" style="font-family:var(--font-mono);font-size:var(--fs-xs)">34e5e843…32b16</span></div>
           </div>
           <div class="demo-surface demo-surface--plain">
-            <p class="demo-kicker">代码块</p>
+            <p class="demo-label">代码块</p>
             <div class="code">python3 -m ksuhook.orchestrator apply \
   --modules susfs,zram
 <button class="code__copy" type="button" data-abk-copy>复制</button></div>
@@ -751,10 +780,10 @@
 
         <div class="demo-grid-2">
           <div class="demo-surface demo-surface--plain">
-            <p class="demo-kicker">步骤条</p>
+            <p class="demo-label">步骤条</p>
             <ol class="steps" style="list-style:none;padding:0">
               <li class="step step--done">
-                <span class="step__dot" aria-hidden="true">✓</span>
+                <span class="step__dot" data-abk-icon="check" aria-hidden="true">✓</span>
                 <div><div class="step__title">解析源码</div><div class="step__desc">确认分支与 manifest 月份</div></div>
               </li>
               <li class="step step--current">
@@ -773,7 +802,7 @@
           </div>
 
           <div class="demo-surface demo-surface--plain">
-            <p class="demo-kicker">时间线</p>
+            <p class="demo-label">时间线</p>
             <div class="timeline">
               <div class="timeline__item timeline__item--accent">
                 <div class="timeline__time">14:02</div>
@@ -814,8 +843,8 @@
           <span class="chip is-selected">全部</span>
           <span class="chip">内核</span>
           <span class="chip">模块</span>
-          <span class="chip">susfs <button class="chip__close" type="button" aria-label="移除 susfs">✕</button></span>
-          <span class="chip">zram <button class="chip__close" type="button" aria-label="移除 zram">✕</button></span>
+          <span class="chip">susfs <button class="chip__close" type="button" aria-label="移除 susfs"><span data-abk-icon="close" aria-hidden="true">✕</span></button></span>
+          <span class="chip">zram <button class="chip__close" type="button" aria-label="移除 zram"><span data-abk-icon="close" aria-hidden="true">✕</span></button></span>
         </div>
       </section>
 
@@ -826,10 +855,10 @@
           <p class="section__desc">页面内的持续状态用提示条；一次性的操作结果用 Toast。</p>
         </div>
         <div class="stack" style="max-width:620px">
-          <div class="alert alert--info"><span class="alert__icon" aria-hidden="true">i</span><div><div class="alert__title">提示</div>构建队列在夜间自动清理，超过 7 天的产物会过期。</div></div>
-          <div class="alert alert--success"><span class="alert__icon" aria-hidden="true">✓</span><div><div class="alert__title">已完成</div>补丁按依赖顺序应用成功，共 6 个模块。</div></div>
-          <div class="alert alert--warning"><span class="alert__icon" aria-hidden="true">!</span><div><div class="alert__title">注意</div>当前分支未包含最新安全补丁，建议更新后再构建。</div></div>
-          <div class="alert alert--danger"><span class="alert__icon" aria-hidden="true">!</span><div><div class="alert__title">失败</div>合并冲突：<code>KernelSU/kernel/ksu.c</code>，请手动解决后重试。</div></div>
+          <div class="alert alert--info"><span class="alert__icon" data-abk-icon="info-mark" aria-hidden="true">i</span><div><div class="alert__title">提示</div>构建队列在夜间自动清理，超过 7 天的产物会过期。</div></div>
+          <div class="alert alert--success"><span class="alert__icon" data-abk-icon="check" aria-hidden="true">✓</span><div><div class="alert__title">已完成</div>补丁按依赖顺序应用成功，共 6 个模块。</div></div>
+          <div class="alert alert--warning"><span class="alert__icon" data-abk-icon="alert-mark" aria-hidden="true">!</span><div><div class="alert__title">注意</div>当前分支未包含最新安全补丁，建议更新后再构建。</div></div>
+          <div class="alert alert--danger"><span class="alert__icon" data-abk-icon="alert-mark" aria-hidden="true">!</span><div><div class="alert__title">失败</div>合并冲突：<code>KernelSU/kernel/ksu.c</code>，请手动解决后重试。</div></div>
         </div>
       </section>
 
@@ -885,7 +914,7 @@
         </div>
         <div class="demo-surface demo-surface--plain">
           <div class="empty">
-            <div class="empty__art" aria-hidden="true">✎</div>
+            <div class="empty__art" data-abk-icon="edit" aria-hidden="true">✎</div>
             <div class="empty__title">还没有构建记录</div>
             <p class="empty__desc">选一个源码与变体，开始第一次构建。结果会在这里保留 7 天。</p>
             <button class="btn btn--primary" type="button">新建构建</button>
@@ -898,8 +927,8 @@
         <div class="section__head">
           <h2 class="section__title"><span class="section__index">16</span>Toast</h2>
           <p class="section__desc">
-            自动消失，一次只显示一条队列；带操作按钮的 Toast 用来提供撤销等即时补救。
-            屏幕底部居中，避开安全区。
+            自动消失；带操作按钮的 Toast 用来提供撤销等即时补救。
+            屏幕底部居中，避开安全区。当前原型可叠放，尚未实现单条队列。
           </p>
         </div>
         <div class="demo-surface demo-row">
@@ -945,15 +974,27 @@
           <p class="section__desc">把组件组合起来看整体密度：标题疏、列表密、操作少。</p>
         </div>
 
-        <div class="demo-row" style="align-items:flex-start;gap:var(--sp-6)">
-          <div class="demo-phone">
+        <div class="demo-block demo-icon-picker">
+          <div class="field">
+            <label class="field__label" for="demo-screen-icon-library">图标库 · 页面预览</label>
+            <select class="select" id="demo-screen-icon-library" data-demo-icon-library aria-describedby="demo-screen-icon-status" disabled>
+              <option value="lucide">Lucide</option>
+              <option value="tabler">Tabler Outline</option>
+              <option value="phosphor">Phosphor Regular</option>
+              <option value="material">Material Symbols Rounded</option>
+            </select>
+            <p class="field__hint" id="demo-screen-icon-status" data-demo-icon-status role="status">图标选择器尚未就绪；脚本不可用时显示备用图标。</p>
+          </div>
+        </div>
+        <div class="demo-row demo-screens">
+          <article class="demo-phone" id="screen-build" aria-labelledby="screen-build-title" tabindex="-1">
             <div class="demo-phone__screen">
               <div class="appbar" style="position:static;padding:0">
-                <div class="appbar__title" style="font-size:var(--fs-xl)">构建</div>
-                <div class="appbar__actions"><button class="icon-btn" type="button" aria-label="新建">＋</button></div>
+                <h3 class="appbar__title" id="screen-build-title" style="font-size:var(--fs-xl)">构建</h3>
+                <div class="appbar__actions"><button class="icon-btn" type="button" aria-label="新建"><span data-abk-icon="plus" aria-hidden="true">＋</span></button></div>
               </div>
 
-              <div class="card card--accent">
+              <div class="card">
                 <div class="card__header">
                   <div>
                     <h3 class="card__title">正在构建</h3>
@@ -986,13 +1027,23 @@
 
               <button class="btn btn--primary btn--block" type="button">新建构建</button>
             </div>
-          </div>
+            <nav class="bottom-nav bottom-nav--inline" aria-label="构建示例底部导航">
+              <a class="bottom-nav__item" href="#screen-build" aria-current="page">
+                <span class="bottom-nav__icon" data-abk-icon="build" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M6 7l2-3h8l2 3M5 7v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7m-9 6h4"/></svg></span>
+                构建
+              </a>
+              <a class="bottom-nav__item" href="#screen-modules">
+                <span class="bottom-nav__icon" data-abk-icon="modules" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></span>
+                模块
+              </a>
+            </nav>
+          </article>
 
-          <div class="demo-phone" style="max-width:340px">
+          <article class="demo-phone" id="screen-modules" aria-labelledby="screen-modules-title" tabindex="-1">
             <div class="demo-phone__screen">
               <div class="hero" style="padding:0">
                 <p class="hero__eyebrow">NyaSU</p>
-                <h2 class="hero__title" style="font-size:var(--fs-2xl)">模块</h2>
+                <h3 class="hero__title" id="screen-modules-title" style="font-size:var(--fs-2xl)">模块</h3>
                 <p class="hero__desc" style="font-size:var(--fs-sm)">按依赖自动排序，冲突会直接停下。</p>
               </div>
               <div class="segmented segmented--block">
@@ -1016,7 +1067,17 @@
               </div>
               <button class="btn btn--primary btn--block" type="button">保存并构建</button>
             </div>
-          </div>
+            <nav class="bottom-nav bottom-nav--inline" aria-label="模块示例底部导航">
+              <a class="bottom-nav__item" href="#screen-build">
+                <span class="bottom-nav__icon" data-abk-icon="build" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M6 7l2-3h8l2 3M5 7v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7m-9 6h4"/></svg></span>
+                构建
+              </a>
+              <a class="bottom-nav__item" href="#screen-modules" aria-current="page">
+                <span class="bottom-nav__icon" data-abk-icon="modules" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></span>
+                模块
+              </a>
+            </nav>
+          </article>
         </div>
       </section>
 
@@ -1031,7 +1092,7 @@
         </div>
         <div class="demo-grid-2">
           <div class="demo-panel">
-            <p class="demo-kicker">最小引入</p>
+            <p class="demo-label">最小引入</p>
             <div class="code">&lt;link rel="stylesheet" href="assets/css/fonts.css"&gt;
 &lt;link rel="stylesheet" href="assets/css/tokens.css"&gt;
 &lt;link rel="stylesheet" href="assets/css/base.css"&gt;
@@ -1043,7 +1104,7 @@
 &lt;script src="assets/js/abk-ui.js" defer&gt;&lt;/script&gt;</div>
           </div>
           <div class="demo-panel">
-            <p class="demo-kicker">声明式交互</p>
+            <p class="demo-label">声明式交互</p>
             <div class="code">&lt;button data-abk-dialog-open="dlg"&gt;打开&lt;/button&gt;
 &lt;button data-abk-sheet-open="sheet"&gt;弹层&lt;/button&gt;
 &lt;button data-abk-menu="menu"&gt;菜单&lt;/button&gt;
@@ -1057,7 +1118,7 @@
         <div class="demo-note" style="margin-top:var(--sp-4)">
           移植到 Kotlin 时，<code>--accent</code> → <code>MaterialTheme.colorScheme.primary</code>，
           <code>--r-lg</code> → <code>Shapes.medium</code>，手写体 → 同名字体资源；
-          交互层逻辑（焦点陷阱、Toast 队列、分段选择）在 Compose 里各有对应实现。
+          交互层逻辑（焦点陷阱、Toast、分段选择）在 Compose 里各有对应实现。
         </div>
       </section>
 
@@ -1076,7 +1137,7 @@
 <dialog class="dialog" id="dlg-confirm" aria-labelledby="dlg-confirm-title">
   <div class="dialog__header">
     <h2 class="dialog__title" id="dlg-confirm-title">删除这条构建记录？</h2>
-    <button class="dialog__close" type="button" data-abk-dialog-close aria-label="关闭">✕</button>
+    <button class="dialog__close" type="button" data-abk-dialog-close aria-label="关闭"><span data-abk-icon="close" aria-hidden="true">✕</span></button>
   </div>
   <div class="dialog__body">
     记录和产物链接都会一并删除，无法恢复。已下载到设备的文件不受影响。
@@ -1101,15 +1162,15 @@
     <div class="list list--plain">
       <button class="list__item" type="button" data-abk-sheet-close
               data-abk-toast="开始下载" data-abk-toast-type="success">
-        <span aria-hidden="true">↧</span><span class="list__body"><span class="list__title">下载 .zip</span><span class="list__desc">132 MB · AnyKernel3</span></span>
+        <span data-abk-icon="download" aria-hidden="true">↧</span><span class="list__body"><span class="list__title">下载 .zip</span><span class="list__desc">132 MB · AnyKernel3</span></span>
       </button>
       <button class="list__item" type="button" data-abk-sheet-close
               data-abk-toast="已复制链接">
-        <span aria-hidden="true">⧉</span><span class="list__body"><span class="list__title">复制链接</span></span>
+        <span data-abk-icon="copy" aria-hidden="true">⧉</span><span class="list__body"><span class="list__title">复制链接</span></span>
       </button>
       <button class="list__item" type="button" data-abk-sheet-close>
-        <span aria-hidden="true">↥</span><span class="list__body"><span class="list__title">上传到云端</span><span class="list__desc">需要登录</span></span>
-        <span class="list__chevron" aria-hidden="true">›</span>
+        <span data-abk-icon="upload" aria-hidden="true">↥</span><span class="list__body"><span class="list__title">上传到云端</span><span class="list__desc">需要登录</span></span>
+        <span class="list__chevron" data-abk-icon="forward" aria-hidden="true">›</span>
       </button>
     </div>
   </div>
@@ -1118,7 +1179,12 @@
   </div>
 </section>
 
+<script src="assets/vendor/icons/icon-data.js" defer></script>
+<script src="assets/js/abk-icons.js" defer></script>
 <script src="assets/js/abk-ui.js" defer></script>
+<script src="assets/js/demo-icons.js" defer></script>
+<script src="assets/vendor/material-color-utilities/material-color-utilities.js" defer></script>
+<script src="assets/js/demo-palette.js" defer></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     var undo = document.getElementById("toast-undo");
@@ -1128,7 +1194,6 @@
           type: "default",
           action: "撤销",
           duration: 6000,
-          dark: true,
           onAction: function () {
             ABK.toast.show("已恢复", { type: "success" });
           },

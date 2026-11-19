@@ -49,7 +49,7 @@
   height: 14px;
   border-radius: 50%;
   background: var(--danger);
-  color: var(--bg-raised);
+  color: var(--danger-ink);
   font-size: 9px;
   font-weight: var(--fw-bold);
 }
@@ -150,6 +150,7 @@
 }
 
 .input-group__icon {
+  --icon-size: 20px;
   position: absolute;
   inset-inline-start: var(--sp-4);
   display: grid;

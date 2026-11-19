@@ -1,0 +1,79 @@
+{
+  "libraries": {
+    "lucide": {
+      "name": "Lucide",
+      "repository": "lucide-icons/lucide",
+      "revision": "742ea78395b4122e13fd46743caba5140f47fb66",
+      "path": "icons/{name}.svg",
+      "license": "LICENSE"
+    },
+    "tabler": {
+      "name": "Tabler Outline",
+      "repository": "tabler/tabler-icons",
+      "revision": "85e870dbe8680c2d6deefd062122d30ef1544a41",
+      "path": "icons/outline/{name}.svg",
+      "license": "LICENSE"
+    },
+    "phosphor": {
+      "name": "Phosphor Regular",
+      "repository": "phosphor-icons/core",
+      "revision": "2b75f3ad12b420c9504ef05df8d2564a28f8500e",
+      "path": "assets/regular/{name}.svg",
+      "license": "LICENSE"
+    },
+    "material": {
+      "name": "Material Symbols Rounded",
+      "repository": "google/material-design-icons",
+      "revision": "10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7",
+      "path": "symbols/web/{name}/materialsymbolsrounded/{name}_24px.svg",
+      "license": "LICENSE"
+    }
+  },
+  "transforms": {
+    "lucide": {
+      "info-mark": {
+        "removePathPrefix": "M12 20V4",
+        "replacementStart": "M12 9v7",
+        "append": "M12 4h.01"
+      }
+    },
+    "phosphor": {
+      "info-mark": {
+        "removePathPrefix": "M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40",
+        "replacementStart": "M144,176"
+      }
+    }
+  },
+  "roles": {
+    "home": ["house", "home", "house", "home"],
+    "search": ["search", "search", "magnifying-glass", "search"],
+    "edit": ["pencil", "pencil", "pencil-simple", "edit"],
+    "plus": ["plus", "plus", "plus", "add"],
+    "refresh": ["rotate-ccw", "refresh", "arrow-counter-clockwise", "refresh"],
+    "upload": ["upload", "upload", "upload-simple", "upload"],
+    "download": ["download", "download", "download-simple", "download"],
+    "settings": ["settings", "settings", "gear-six", "settings"],
+    "menu": ["menu", "menu-2", "list", "menu"],
+    "more": ["ellipsis-vertical", "dots-vertical", "dots-three-vertical", "more_vert"],
+    "check": ["check", "check", "check", "check"],
+    "close": ["x", "x", "x", "close"],
+    "back": ["chevron-left", "chevron-left", "caret-left", "chevron_left"],
+    "forward": ["chevron-right", "chevron-right", "caret-right", "chevron_right"],
+    "moon": ["moon", "moon", "moon", "dark_mode"],
+    "sun": ["sun", "sun", "sun", "light_mode"],
+    "pending": ["hourglass", "hourglass", "hourglass", "hourglass_empty"],
+    "warning": ["triangle-exclamation-point", "alert-triangle", "warning", "warning"],
+    "arrow-right": ["arrow-right", "arrow-right", "arrow-right", "arrow_forward"],
+    "build": ["package", "package", "package", "package_2"],
+    "modules": ["puzzle", "puzzle", "puzzle-piece", "extension"],
+    "copy": ["copy", "copy", "copy", "content_copy"],
+    "info": ["info", "info-circle", "info", "info"],
+    "info-mark": ["letter-i", "info-small", "info", "info_i"],
+    "alert-mark": ["exclamation-mark", "exclamation-mark", "exclamation-mark", "priority_high"],
+    "dot": ["dot", "point", "dot", "fiber_manual_record"],
+    "cpu": ["cpu", "cpu", "cpu", "memory"],
+    "terminal": ["terminal", "terminal-2", "terminal-window", "terminal"],
+    "controls": ["sliders-horizontal", "adjustments-horizontal", "sliders-horizontal", "tune"],
+    "trash": ["trash", "trash", "trash", "delete"]
+  }
+}

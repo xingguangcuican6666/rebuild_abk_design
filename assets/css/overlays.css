@@ -323,20 +323,21 @@
 }
 
 .toast__icon {
+  --icon-size: 16px;
   flex: none;
   display: grid;
   place-items: center;
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  color: var(--accent-ink);
+  color: var(--bg-raised);
   background: var(--ink-muted);
 }
 
-.toast--success .toast__icon { background: var(--success); }
-.toast--danger .toast__icon  { background: var(--danger); }
-.toast--warning .toast__icon { background: var(--warning); }
-.toast--info .toast__icon    { background: var(--info); }
+.toast--success .toast__icon { background: var(--success); color: var(--success-ink); }
+.toast--danger .toast__icon  { background: var(--danger);  color: var(--danger-ink); }
+.toast--warning .toast__icon { background: var(--warning); color: var(--warning-ink); }
+.toast--info .toast__icon    { background: var(--info);    color: var(--info-ink); }
 
 .toast__text {
   line-height: 1.4;
@@ -354,17 +355,8 @@
 }
 
 .toast__action:hover {
+  color: var(--accent-soft-ink);
   background: var(--accent-soft);
-}
-
-.toast--dark {
-  background: var(--ink);
-  color: var(--bg-raised);
-  border-color: var(--ink);
-}
-
-.toast--dark .toast__action {
-  color: var(--accent);
 }
 
 /* ================================================================ 浮层动画 */

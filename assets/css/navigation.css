@@ -171,67 +171,63 @@
   bottom: 0;
   z-index: var(--z-sticky);
   display: flex;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  background: color-mix(in oklab, var(--bg-raised) 92%, transparent);
-  backdrop-filter: saturate(1.4) blur(14px);
+  padding: var(--sp-1) var(--sp-2) calc(var(--sp-1) + env(safe-area-inset-bottom, 0px));
+  background: var(--bg-raised);
   border-top: 1px solid var(--line);
 }
 
+.bottom-nav--inline {
+  position: static;
+  padding-bottom: var(--sp-1);
+}
+
 .bottom-nav__item {
+  position: relative;
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: var(--sp-1);
   min-height: 56px;
-  padding: var(--sp-2) var(--sp-1);
-  color: var(--ink-faint);
+  padding: var(--sp-1) var(--sp-2) var(--sp-3);
+  color: var(--ink-muted);
   font-family: var(--font-hand);
   font-size: var(--fs-xs);
-  transition: color var(--dur-fast) var(--ease-out);
-  -webkit-tap-highlight-color: transparent;
+  line-height: var(--lh-tight);
+  text-align: center;
+  text-decoration: none;
+  border-radius: var(--r-sm);
+  transition: background-color var(--dur-fast) var(--ease-out);
 }
 
 .bottom-nav__item:hover {
-  color: var(--ink-muted);
+  background: var(--bg-sunken);
 }
 
-.bottom-nav__item.is-active {
-  color: var(--accent);
+.bottom-nav__item:focus-visible {
+  outline-color: currentColor;
+  outline-offset: -2px;
 }
 
 .bottom-nav__icon {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 26px;
+  --icon-size: 22px;
+  flex: none;
+  width: 22px;
+  height: 22px;
+}
+
+/* 只标记当前位置；不改变入口的颜色、大小或布局。 */
+.bottom-nav__item[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: var(--sp-1);
+  width: var(--sp-3);
+  margin-inline: auto;
+  border-bottom: 2px solid currentColor;
   border-radius: var(--r-pill);
-  font-size: 18px;
-  line-height: 1;
-  transition: background-color var(--dur-fast) var(--ease-out),
-              transform var(--dur-fast) var(--ease-spring);
-}
-
-.bottom-nav__item.is-active .bottom-nav__icon {
-  background: var(--accent-soft);
-  transform: translateY(-1px);
-}
-
-/* 中央凸起的主操作 */
-.bottom-nav__item--fab {
-  position: relative;
-}
-
-.bottom-nav__item--fab .bottom-nav__icon {
-  width: 48px;
-  height: 48px;
-  margin-top: -18px;
-  border-radius: 46% 54% 48% 52% / 52% 48% 54% 46%;
-  background: var(--accent);
-  color: var(--accent-ink);
-  font-size: 22px;
-  box-shadow: var(--shadow-md);
 }
 
 /* ================================================================ 面包屑 */
@@ -253,7 +249,7 @@
 }
 
 .breadcrumb__link:hover {
-  color: var(--accent);
+  color: var(--accent-soft-ink);
   background: var(--accent-soft);
 }
 
@@ -293,7 +289,7 @@
 }
 
 .toc__link.is-active {
-  color: var(--accent);
+  color: var(--accent-soft-ink);
   font-weight: var(--fw-bold);
   background: var(--accent-soft);
 }

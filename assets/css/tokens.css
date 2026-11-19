@@ -63,83 +63,88 @@
   --paper-grain: none;
 }
 
-/* ---------------------------------------------------------------- 亮色 */
+/* 默认种子 #496a78；颜色由 assets/js/demo-palette.js 的角色映射生成。 */
 :root,
 [data-theme="light"] {
   color-scheme: light;
 
-  --bg: #faf7f1;            /* 纸白 */
-  --bg-raised: #fffdf9;
-  --bg-sunken: #f2ece1;
-  --bg-input: #fbf8f2;
+  --bg: #f5fafd;
+  --bg-raised: #ffffff;
+  --bg-sunken: #eaeef2;
+  --bg-input: #f0f4f7;
+  --ink: #171c1f;
+  --ink-soft: #40484c;
+  --ink-muted: #4e565a;
+  --ink-faint: #576064;
+  --line: #c0c8cc;
+  --line-strong: #70787d;
+  --accent: #0c6780;
+  --accent-ink: #ffffff;
+  --accent-soft: #baeaff;
+  --accent-soft-ink: #004d62;
+  --accent-line: #c0c8cc;
+  --danger: #ba1a1a;
+  --danger-ink: #ffffff;
+  --danger-soft: #ffdad6;
+  --danger-soft-ink: #93000a;
+  --info: #4c616b;
+  --info-ink: #ffffff;
+  --info-soft: #cfe6f1;
+  --info-soft-ink: #354a53;
+  --success: #2f6a40;
+  --success-ink: #ffffff;
+  --success-soft: #b2f2bc;
+  --success-soft-ink: #00210b;
+  --warning: #875300;
+  --warning-ink: #ffffff;
+  --warning-soft: #ffddb9;
+  --warning-soft-ink: #2b1700;
+  --scrim: #0000006b;
 
-  --ink: #221f1a;           /* 墨 */
-  --ink-soft: #4a443a;
-  --ink-muted: #7d7466;
-  --ink-faint: #a89e8e;
-
-  --line: #e4dccd;
-  --line-strong: #cfc4b0;
-
-  --accent: #b5442c;        /* 朱砂 */
-  --accent-ink: #fffaf5;
-  --accent-soft: #f6e2da;
-  --accent-line: #e3b5a6;
-
-  --success: #3f7a4e;
-  --success-soft: #e4efe4;
-  --warning: #a86b12;
-  --warning-soft: #f6ebd4;
-  --danger: #a8332a;
-  --danger-soft: #f7e0dc;
-  --info: #3a6288;
-  --info-soft: #e2eaf2;
-
-  --shadow-sm: 0 1px 2px rgba(52, 40, 24, .06), 0 1px 1px rgba(52, 40, 24, .04);
-  --shadow-md: 0 6px 16px -6px rgba(52, 40, 24, .22), 0 1px 2px rgba(52, 40, 24, .06);
-  --shadow-lg: 0 22px 48px -18px rgba(52, 40, 24, .32), 0 2px 6px rgba(52, 40, 24, .06);
-
-  --focus: rgba(181, 68, 44, .32);
-  --scrim: rgba(34, 31, 26, .42);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / .06), 0 1px 1px rgb(0 0 0 / .04);
+  --shadow-md: 0 6px 16px -6px rgb(0 0 0 / .22), 0 1px 2px rgb(0 0 0 / .06);
+  --shadow-lg: 0 22px 48px -18px rgb(0 0 0 / .32), 0 2px 6px rgb(0 0 0 / .06);
 }
 
-/* ---------------------------------------------------------------- 暗色 */
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --bg: #171614;
-  --bg-raised: #1f1d1a;
-  --bg-sunken: #121110;
-  --bg-input: #232019;
+  --bg: #0f1417;
+  --bg-raised: #1b2023;
+  --bg-sunken: #0a0f11;
+  --bg-input: #252b2d;
+  --ink: #dee3e6;
+  --ink-soft: #c0c8cc;
+  --ink-muted: #bac2c7;
+  --ink-faint: #b2babf;
+  --line: #40484c;
+  --line-strong: #8a9296;
+  --accent: #89d0ed;
+  --accent-ink: #003545;
+  --accent-soft: #004d62;
+  --accent-soft-ink: #baeaff;
+  --accent-line: #40484c;
+  --danger: #ffb4ab;
+  --danger-ink: #690005;
+  --danger-soft: #93000a;
+  --danger-soft-ink: #ffdad6;
+  --info: #b3cad5;
+  --info-ink: #1e333c;
+  --info-soft: #354a53;
+  --info-soft-ink: #cfe6f1;
+  --success: #96d5a1;
+  --success-ink: #003918;
+  --success-soft: #13512a;
+  --success-soft-ink: #b2f2bc;
+  --warning: #ffb964;
+  --warning-ink: #472a00;
+  --warning-soft: #663e00;
+  --warning-soft-ink: #ffddb9;
+  --scrim: #00000094;
 
-  --ink: #f3ede2;
-  --ink-soft: #d3c9b8;
-  --ink-muted: #9d9182;
-  --ink-faint: #6c6357;
-
-  --line: #33302a;
-  --line-strong: #4a453c;
-
-  --accent: #e07a5f;
-  --accent-ink: #2a100b;
-  --accent-soft: #3a231c;
-  --accent-line: #5c3529;
-
-  --success: #8cc79a;
-  --success-soft: #1e2b20;
-  --warning: #e0b05f;
-  --warning-soft: #2e2617;
-  --danger: #e58a80;
-  --danger-soft: #33201d;
-  --info: #8ab4dd;
-  --info-soft: #1b242f;
-
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
-  --shadow-md: 0 8px 20px -8px rgba(0, 0, 0, .65), 0 1px 2px rgba(0, 0, 0, .4);
-  --shadow-lg: 0 26px 56px -20px rgba(0, 0, 0, .8), 0 2px 8px rgba(0, 0, 0, .4);
-
-  --focus: rgba(224, 122, 95, .4);
-  --scrim: rgba(0, 0, 0, .58);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / .4);
+  --shadow-md: 0 8px 20px -8px rgb(0 0 0 / .65), 0 1px 2px rgb(0 0 0 / .4);
+  --shadow-lg: 0 26px 56px -20px rgb(0 0 0 / .8), 0 2px 8px rgb(0 0 0 / .4);
 }
 
 /* ---------------------------------------------------------------- 无障碍 */
@@ -159,7 +164,8 @@
 }
 
 @media (prefers-contrast: more) {
-  :root {
+  :root,
+  :root[data-theme] {
     --line: var(--ink-muted);
     --line-strong: var(--ink-soft);
   }

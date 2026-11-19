@@ -141,6 +141,24 @@
 }
 
 /* ---------------------------------------------------------------- 色板 */
+.palette-status:not(:empty) {
+  margin-top: var(--sp-2);
+}
+
+.palette-seed {
+  width: 64px;
+  min-height: 44px;
+  padding: var(--sp-1);
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--bg-input);
+  cursor: pointer;
+}
+
+.palette-seed:disabled {
+  cursor: default;
+}
+
 .swatches {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -253,12 +271,20 @@
   background: var(--bg-sunken);
 }
 
-.icon-cell span:first-child {
-  font-size: 21px;
-  line-height: 1;
+.demo-icon-picker {
+  width: 100%;
+  max-width: 340px;
+  margin-bottom: var(--sp-5);
 }
 
-.icon-cell span:last-child {
+.icon-cell [data-abk-icon] {
+  --icon-size: 24px;
+  width: 28px;
+  height: 28px;
+  font-size: 21px;
+}
+
+.icon-cell__name {
   font-family: var(--font-mono);
   font-size: 10px;
   color: var(--ink-faint);
@@ -280,6 +306,21 @@
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
+}
+
+.demo-screens {
+  align-items: stretch;
+  gap: var(--sp-6);
+}
+
+.demo-screens .demo-phone {
+  display: flex;
+  flex-direction: column;
+  scroll-margin-top: 84px;
+}
+
+.demo-screens .bottom-nav {
+  margin-top: auto;
 }
 
 .demo-grid-2 {
@@ -309,25 +350,6 @@
   color: var(--ink-soft);
   font-size: var(--fs-sm);
   line-height: var(--lh-normal);
-}
-
-/* 组件说明的小标题 */
-.demo-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: var(--sp-3);
-  font-family: var(--font-hand);
-  font-size: var(--fs-sm);
-  color: var(--ink-muted);
-}
-
-.demo-kicker::before {
-  content: "";
-  width: 14px;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--accent);
 }
 
 /* ---------------------------------------------------------------- 收尾 */

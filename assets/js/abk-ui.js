@@ -60,7 +60,11 @@
       const label = isDark ? btn.dataset.labelLight : btn.dataset.labelDark;
       if (label) btn.setAttribute("aria-label", label);
       const icon = $("[data-abk-theme-icon]", btn);
-      if (icon) icon.textContent = isDark ? icon.dataset.iconLight ?? "☀" : icon.dataset.iconDark ?? "☾";
+      if (icon) {
+        icon.dataset.abkIcon = isDark ? "sun" : "moon";
+        icon.textContent = isDark ? icon.dataset.iconLight ?? "☀" : icon.dataset.iconDark ?? "☾";
+        global.ABKIcons?.render(icon);
+      }
     });
   }
 
@@ -307,16 +311,19 @@
         onAction,
         duration = 3200,
         icon,
-        dark = false,
       } = opts;
 
       const el = document.createElement("div");
-      el.className = "toast toast--" + type + (dark ? " toast--dark" : "");
+      el.className = "toast toast--" + type;
 
       const iconEl = document.createElement("span");
       iconEl.className = "toast__icon";
       iconEl.textContent = icon ?? { success: "✓", danger: "!", warning: "!", info: "i" }[type] ?? "•";
       iconEl.setAttribute("aria-hidden", "true");
+      if (icon == null) {
+        iconEl.dataset.abkIcon = { success: "check", danger: "alert-mark", warning: "alert-mark", info: "info-mark" }[type] ?? "dot";
+        global.ABKIcons?.render(iconEl);
+      }
 
       const text = document.createElement("span");
       text.className = "toast__text";
