@@ -1,0 +1,344 @@
+/* ==========================================================================
+   ABK UI · 展示页样式
+   只服务于 index.html：区块排布、token 色板、组件示例的网格。
+   ========================================================================== */
+
+.demo-appbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+.demo-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex: none;
+}
+
+.demo-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 46% 54% 52% 48% / 54% 46% 52% 48%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-hand);
+  font-weight: var(--fw-bold);
+  font-size: 17px;
+}
+
+.demo-brand__name {
+  font-family: var(--font-hand);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  line-height: 1.1;
+}
+
+.demo-brand__ver {
+  font-size: var(--fs-xs);
+  color: var(--ink-muted);
+}
+
+/* ---------------------------------------------------------------- 目录 */
+.demo-toc {
+  position: sticky;
+  top: 84px;
+  align-self: start;
+  max-height: calc(100dvh - 100px);
+  overflow-y: auto;
+  padding-inline-end: var(--sp-2);
+}
+
+.demo-toc__group + .demo-toc__group {
+  margin-top: var(--sp-4);
+}
+
+.demo-toc__title {
+  padding: 0 var(--sp-3) var(--sp-1);
+  font-family: var(--font-hand);
+  font-size: var(--fs-xs);
+  letter-spacing: .1em;
+  color: var(--ink-faint);
+}
+
+/* ---------------------------------------------------------------- 区块 */
+.section {
+  padding-block: var(--sp-7) var(--sp-6);
+  scroll-margin-top: 84px;
+}
+
+.section + .section {
+  border-top: 1px dashed var(--line);
+}
+
+.section__head {
+  margin-bottom: var(--sp-5);
+}
+
+.section__title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  font-family: var(--font-hand);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+}
+
+.section__index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-faint);
+  font-weight: var(--fw-regular);
+}
+
+.section__desc {
+  margin-top: var(--sp-2);
+  max-width: 60ch;
+  color: var(--ink-muted);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-loose);
+}
+
+.demo-block + .demo-block {
+  margin-top: var(--sp-6);
+}
+
+.demo-label {
+  margin-bottom: var(--sp-3);
+  font-family: var(--font-hand);
+  font-size: var(--fs-sm);
+  color: var(--ink-muted);
+}
+
+.demo-surface {
+  padding: var(--sp-5);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background:
+    repeating-linear-gradient(-45deg,
+      transparent 0 11px,
+      color-mix(in oklab, var(--line) 45%, transparent) 11px 12px),
+    var(--bg);
+}
+
+.demo-surface--plain {
+  background: var(--bg-raised);
+}
+
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.demo-stack-sm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+/* ---------------------------------------------------------------- 色板 */
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--sp-3);
+}
+
+.swatch {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+}
+
+.swatch__color {
+  height: 56px;
+  background: var(--swatch);
+  border-bottom: 1px solid var(--line);
+}
+
+.swatch--checker .swatch__color {
+  background:
+    linear-gradient(var(--swatch), var(--swatch)),
+    repeating-conic-gradient(var(--line) 0 25%, transparent 0 50%) 0 0 / 12px 12px;
+}
+
+.swatch__body {
+  padding: var(--sp-2) var(--sp-3) var(--sp-3);
+}
+
+.swatch__name {
+  font-family: var(--font-hand);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+}
+
+.swatch__token {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-muted);
+}
+
+/* ---------------------------------------------------------------- 字体 */
+.type-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.type-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: var(--sp-4);
+  align-items: baseline;
+}
+
+.type-row__meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-faint);
+}
+
+.type-row__sample {
+  line-height: 1.35;
+}
+
+/* ---------------------------------------------------------------- 间距 */
+.spacing-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.spacing-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-muted);
+}
+
+.spacing-row__bar {
+  height: 10px;
+  border-radius: 3px;
+  background: var(--accent);
+  opacity: .8;
+}
+
+/* ---------------------------------------------------------------- 图标 */
+.icon-set {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: var(--sp-2);
+}
+
+.icon-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-2);
+  border-radius: var(--r-md);
+  color: var(--ink-soft);
+  transition: background-color var(--dur-fast);
+}
+
+.icon-cell:hover {
+  background: var(--bg-sunken);
+}
+
+.icon-cell span:first-child {
+  font-size: 21px;
+  line-height: 1;
+}
+
+.icon-cell span:last-child {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+}
+
+/* ---------------------------------------------------------------- 示例布局 */
+.demo-phone {
+  width: 100%;
+  max-width: 340px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xl);
+  background: var(--bg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.demo-phone__screen {
+  padding: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.demo-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--sp-4);
+  align-items: start;
+}
+
+.demo-panel {
+  padding: var(--sp-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-raised);
+}
+
+.demo-menu-host {
+  position: relative;
+  display: inline-block;
+}
+
+.demo-note {
+  padding: var(--sp-3) var(--sp-4);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+  color: var(--ink-soft);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+}
+
+/* 组件说明的小标题 */
+.demo-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--sp-3);
+  font-family: var(--font-hand);
+  font-size: var(--fs-sm);
+  color: var(--ink-muted);
+}
+
+.demo-kicker::before {
+  content: "";
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--accent);
+}
+
+/* ---------------------------------------------------------------- 收尾 */
+.demo-footer {
+  padding-block: var(--sp-7) var(--sp-9);
+  border-top: 1px solid var(--line);
+  color: var(--ink-muted);
+  font-size: var(--fs-sm);
+}
+
+@media (max-width: 860px) {
+  .demo-toc { display: none; }
+  .type-row { grid-template-columns: 1fr; gap: var(--sp-1); }
+}

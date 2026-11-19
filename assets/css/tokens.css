@@ -1,0 +1,166 @@
+/* ==========================================================================
+   ABK UI · Design tokens
+   手写体 + 纸张质感 + 墨色层级的简约设计系统。
+   所有颜色、圆角、间距、动效都从这里取，组件文件不写魔法值。
+   ========================================================================== */
+
+:root {
+  /* ---- 字体 ---- */
+  --font-hand: "LXGW WenKai", "Ma Shan Zheng", "Caveat", "Kaiti SC", "STKaiti", "KaiTi", "Noto Serif SC", cursive;
+  --font-ui: "LXGW WenKai", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "LXGW WenKai Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.375rem;
+  --fs-2xl: 1.75rem;
+  --fs-3xl: 2.25rem;
+
+  --lh-tight: 1.25;
+  --lh-normal: 1.6;
+  --lh-loose: 1.85;
+
+  /* ---- 字体大小：手机端稍小 ---- */
+  --fw-regular: 400;
+  --fw-bold: 700;
+
+  /* ---- 间距（8px 基） ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 40px;
+  --sp-9: 56px;
+
+  /* ---- 圆角 ---- */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 26px;
+  --r-pill: 999px;
+
+  /* ---- 动效 ---- */
+  --ease-out: cubic-bezier(.22, .61, .36, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --dur-fast: 120ms;
+  --dur-base: 220ms;
+  --dur-slow: 360ms;
+
+  /* ---- 层级 ---- */
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-overlay: 100;
+  --z-modal: 200;
+  --z-toast: 300;
+
+  /* ---- 纸张 ---- */
+  --paper-grain: none;
+}
+
+/* ---------------------------------------------------------------- 亮色 */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #faf7f1;            /* 纸白 */
+  --bg-raised: #fffdf9;
+  --bg-sunken: #f2ece1;
+  --bg-input: #fbf8f2;
+
+  --ink: #221f1a;           /* 墨 */
+  --ink-soft: #4a443a;
+  --ink-muted: #7d7466;
+  --ink-faint: #a89e8e;
+
+  --line: #e4dccd;
+  --line-strong: #cfc4b0;
+
+  --accent: #b5442c;        /* 朱砂 */
+  --accent-ink: #fffaf5;
+  --accent-soft: #f6e2da;
+  --accent-line: #e3b5a6;
+
+  --success: #3f7a4e;
+  --success-soft: #e4efe4;
+  --warning: #a86b12;
+  --warning-soft: #f6ebd4;
+  --danger: #a8332a;
+  --danger-soft: #f7e0dc;
+  --info: #3a6288;
+  --info-soft: #e2eaf2;
+
+  --shadow-sm: 0 1px 2px rgba(52, 40, 24, .06), 0 1px 1px rgba(52, 40, 24, .04);
+  --shadow-md: 0 6px 16px -6px rgba(52, 40, 24, .22), 0 1px 2px rgba(52, 40, 24, .06);
+  --shadow-lg: 0 22px 48px -18px rgba(52, 40, 24, .32), 0 2px 6px rgba(52, 40, 24, .06);
+
+  --focus: rgba(181, 68, 44, .32);
+  --scrim: rgba(34, 31, 26, .42);
+}
+
+/* ---------------------------------------------------------------- 暗色 */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #171614;
+  --bg-raised: #1f1d1a;
+  --bg-sunken: #121110;
+  --bg-input: #232019;
+
+  --ink: #f3ede2;
+  --ink-soft: #d3c9b8;
+  --ink-muted: #9d9182;
+  --ink-faint: #6c6357;
+
+  --line: #33302a;
+  --line-strong: #4a453c;
+
+  --accent: #e07a5f;
+  --accent-ink: #2a100b;
+  --accent-soft: #3a231c;
+  --accent-line: #5c3529;
+
+  --success: #8cc79a;
+  --success-soft: #1e2b20;
+  --warning: #e0b05f;
+  --warning-soft: #2e2617;
+  --danger: #e58a80;
+  --danger-soft: #33201d;
+  --info: #8ab4dd;
+  --info-soft: #1b242f;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+  --shadow-md: 0 8px 20px -8px rgba(0, 0, 0, .65), 0 1px 2px rgba(0, 0, 0, .4);
+  --shadow-lg: 0 26px 56px -20px rgba(0, 0, 0, .8), 0 2px 8px rgba(0, 0, 0, .4);
+
+  --focus: rgba(224, 122, 95, .4);
+  --scrim: rgba(0, 0, 0, .58);
+}
+
+/* ---------------------------------------------------------------- 无障碍 */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --line: var(--ink-muted);
+    --line-strong: var(--ink-soft);
+  }
+}
