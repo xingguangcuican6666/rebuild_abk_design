@@ -4,14 +4,23 @@
 
 设计取向：**简约而不空泛**——留白多，但每个组件都有明确的层级、状态和反馈；字体统一使用手写体（霞鹜文楷），配色只有纸白、墨色与一个朱砂强调色。
 
+项目状态、定稿验收项和后续移植清单见 [HANDOFF.md](HANDOFF.md)。
+
 ## 快速预览
 
+在仓库根目录用 Bash 执行。只预览已提交的快照，并只监听本机：
+
 ```bash
-python3 -m http.server 8080
-# 打开 http://localhost:8080
+(
+  set -o pipefail
+  preview=$(mktemp -d) || exit 1
+  trap 'rm -rf -- "$preview"' EXIT
+  git archive HEAD | tar -xf - -C "$preview" || exit 1
+  python3 -I -m http.server 8080 --bind 127.0.0.1 --directory "$preview"
+)
 ```
 
-直接双击 `index.html` 也能看，只是 `file://` 下远程字体可能加载更慢。
+打开 `http://127.0.0.1:8080`，按 `Ctrl+C` 停止服务并清理预览目录。若只想看未提交的页面改动，可以直接在浏览器打开 `index.html`；不要从仓库根目录启动 HTTP 服务。
 
 ## 目录
 
