@@ -1,32 +1,39 @@
 # ABK UI · 交接
 
-**当前阶段：网页配色已定为 Material You 动态色；网页原型仍需验收，Kotlin / Compose 尚未开始。** 已推送并检出验证的网页基线是 `main` 上的 `13d507c`。`index.html` 有 19 个展示区块，以及「构建」「模块」两套 App 页面示例；示例数据是静态样例，不接入真实构建服务。
+**当前阶段：网页已收敛为 Lucide；Android Compose 库和独立 catalog App 的源码已完成首轮覆盖。** `:abk-ui` 是可复用库，`:catalog` 只保留完整目录、一个精选组件预览页和两个静态交互示例（构建、模块），不接真实构建服务或网络下载。
 
-## 从哪里接手
+## 入口
 
-| 要改什么 | 入口 |
+| 目标 | 入口 |
 | --- | --- |
-| 看组件、状态和组合页面 | `index.html`（先看「页面示例」，再回看单个组件） |
-| 调整颜色、字体、间距、圆角和动效 | `assets/css/tokens.css`；种子与角色的映射在 `assets/js/demo-palette.js`，字体来源在 `assets/css/fonts.css` |
-| 调整可复用样式 | `assets/css/base.css` 和 `components.css` / `forms.css` / `overlays.css` / `navigation.css`；`demo.css` 只负责展示页 |
-| 调整操作行为 | `assets/js/abk-ui.js`；通过 `data-abk-*` 绑定，程序调用走 `ABK` |
+| 网页组件和组合页面 | `index.html` |
+| 原生主题、颜色、字体 | `abk-ui/src/main/kotlin/.../theme` |
+| 原生 Lucide 图标 | `abk-ui/src/main/kotlin/.../icons`；生成器为 `scripts/generate-compose-icons.py` |
+| 原生组件 | `abk-ui/src/main/kotlin/.../components` |
+| 原生目录入口 | `catalog/src/main/kotlin/.../MainActivity.kt`、`CatalogSections.kt`、`ExampleScreens.kt` |
+| 原生组件预览页 | `catalog/src/main/kotlin/.../ComponentPreview.kt`（独立「预览」底栏入口，精选真实组件组合） |
+| 覆盖矩阵与验证界限 | `docs/compose-coverage.md` |
 
-按 [README 的快速预览](README.md#快速预览) 启动。只从 Git 导出静态文件，不要用仓库根目录直接开 HTTP 服务，也不要把本机凭据纳入 Git 或部署内容。
+## 原生约定
 
-## 定稿前要做什么
+- 所有公开库 API 统一 `Abk*` 前缀；状态由宿主通过 `value/onValueChange`、`selected/onSelect`、`expanded/onExpandedChange` 等参数持有。
+- `AbkBottomNavigation` 只使用等权入口；选择不改变图标、字号或热区，仅用中性短线和选择语义标记当前位置。
+- 构建卡片使用普通面色，进度、徽标和反馈才使用状态色；Snackbar 保持主题同底色并支持撤销结果。
+- 触控区域至少 48dp；装饰图标使用空描述，独立图标按钮必须传可访问描述；错误、警告和加载不能只靠颜色。
+- `AbkTheme` 不持久化偏好。系统动态色与固定种子是两个明确来源；固定种子路径对照网页的 Tonal Spot / 2021 / phone / contrast 0。
+- `reduceMotion` 会关闭库内装饰性的 shimmer、spinner、dots 和 indeterminate animation；宿主仍应根据自己的系统偏好传入该值。
 
-1. **先看实际 App 密度。** 在窄屏和桌面分别看浅色、深色，确认霞鹜文楷在标题、按钮和长正文中的可读性，以及字体加载失败时的回退。在「设计变量」更换动态种子，确认背景层级、局部状态色，以及等权底栏在不同色相下的效果；状态不能只靠颜色区分。
-2. **做一次完整的真实浏览器验收。** 重点验收键盘操作、焦点可见、弹层关闭后的焦点归还、实际触控区域、对比度和减少动效偏好。用「构建」「模块」示例检查底栏，再看构建卡片和带撤销的 Toast 是否在两种明暗下都跟随主题。
-3. **核对已知原型缺口。** Toast 目前可叠放，不是「一次一条」队列；关闭对话框或弹层的按钮同时声明 Toast 时，关闭分支会提前返回，Toast 不会触发。复选框的半选态需要设置 `input.indeterminate` 属性；纸纹选择器也需要与 `data-grain` 实际挂载位置对齐。定稿前修正或更新示例说明，不把这些差异当成最终行为。
+## 构建与验证
 
-## 本轮验证
+工具链固定为 JDK 17、Wrapper 8.13、AGP 8.11.1、Kotlin/Compose compiler 2.2.21、Compose BOM 2025.11.01。产物字节码为 Java 17；`Test` 任务由 `abk-ui/build.gradle.kts` 的 `javaLauncher` 固定用 Java 21 启动，因为 Robolectric SDK 36 fixture 需要它，所以命令里的 `JAVA_HOME` 仍是 17。实际 Gradle 构建还需要用户自行审阅并接受 Android SDK 许可，然后安装 API 36 与构建工具；不得复制许可或自动接受。
 
-2026-11-20 使用隔离的 Edge 核对了本机静态预览及 `file://`：默认 CSS 与 MCU 生成值一致，种子切换、明暗切换、增强对比度覆盖、MCU 缺失时的回退均通过。对 8 个种子、浅深两色、1440 / 390 / 320px 宽度的 48 组状态抽检了 27 对颜色，文字最低约 5.52:1，底栏文字与中性位置标记最低约 7.45:1；底栏等宽、点击与键盘跳转、焦点环样式和页面无横向溢出也已核对。普通及带撤销的 Toast 在浅深色下同底同文字色，撤销可用；构建卡片无渐变，小标题无前缀装饰。相关脚本语法检查与 `git diff --check` 通过。
+```bash
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk ./gradlew :abk-ui:assembleRelease :catalog:assembleDebug
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk ./gradlew :abk-ui:testDebugUnitTest :abk-ui:lintDebug :catalog:lintDebug
+```
 
-四套本地 SVG 对照随后在 `file://` 与隔离 localhost 静态副本用 Edge 验收：Lucide、Tabler Outline、Phosphor Regular、Material Symbols Rounded 的 30 个语义角色齐全，默认 Lucide；两处选择器同步、键盘切换且保留焦点，刷新回默认。对四库 × 浅深主题 × 1440 / 390 / 320px 共 24 组检查了全页图标渲染、几何可见、状态和无横向溢出。底栏点击及键盘跳转、Accordion、对话框、弹层关闭仍可用；已有及新建默认 Toast 随图标库更新，显式自定义 Toast 图标不变，撤销仍有效。图标数据、渲染器或展示控制器分别缺失及禁用 JavaScript 时均保留备用显示并禁用选择器。没有观察到浏览器 JS 错误或在线图标请求；霞鹜文楷仍按既有配置从 unpkg 请求。核对期间发现并修正了 Lucide 状态载体中缺失的 `i` 点，已重建固定来源注册表并重跑检查。
+当前已完成：Wrapper 分发包与校验值、图标生成脚本、JS 语法/差异检查、SDK-free host fixture 中的 Kotlin/Compose 编译，以及 **20 项 host 测试全部通过**（`AbkComponentsTest` 15、`AbkPaletteTest` 2 含 512 个黄金色板向量、`AbkSnackbarTest` 3），在 Java 21 测试 JVM 上运行。网页侧 Edge 回归也通过：主题、57 个图标、折叠面板、对话框/弹层/菜单开关与焦点回归、双主题撤销提示、等权底栏、1440/390/320 三档宽度、图标脚本缺失回退。
 
-以上是本轮改动的定点验证，不替代前述完整无障碍与触控验收；Toast 单条队列等已知缺口仍保留。
+当前未完成：Gradle Android 资源打包（`assembleRelease`/`assembleDebug`）、Lint 与设备或模拟器视觉/TalkBack/IME/安装验收。打包被未接受的 `build-tools;35.0.0` 与 `platforms;android-36` 许可阻断；SDK-free fixture 不产出 AAR/APK。没有设备时不能把源检查写成真机通过。
 
-## 定稿后移植
-
-以网页组件目录为清单逐项覆盖，不能只移植两个页面示例。先映射设计变量与字体到 Compose 主题，再移植基础布局、操作与表单、导航、浮层与反馈、数据展示，最后用两套页面验证组合效果。每项记录对应的 Composable、支持的变体与状态、亮暗主题和无障碍语义；涉及交互的组件同时验收输入、焦点和关闭行为。平台映射起点见 [README 的 Kotlin 对照表](README.md#移植到-kotlin)。
+网页预览仍遵循只导出 Git 快照后监听 `127.0.0.1` 的规则，不从仓库根目录直接启动 HTTP 服务，也不把本机凭据、SDK、local.properties、签名或构建产物加入 Git。
