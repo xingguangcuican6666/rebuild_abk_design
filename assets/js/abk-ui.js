@@ -164,15 +164,21 @@
       if (!el) return null;
       returnFocus.set(el, document.activeElement);
       el.hidden = false;
-      requestAnimationFrame(() => el.classList.add("is-open"));
+      // The sheet is still visibility:hidden until is-open is painted, so focus
+      // must wait for that frame; focusing early silently leaves focus outside.
+      requestAnimationFrame(() => {
+        el.classList.add("is-open");
+        requestAnimationFrame(() => {
+          const target = $("[autofocus]", el) || focusables(el)[0];
+          target?.focus({ preventScroll: true });
+        });
+      });
       lockScroll();
       const scrim = scrimOf(el);
       if (scrim) {
         scrim.hidden = false;
         requestAnimationFrame(() => scrim.classList.add("is-open"));
       }
-      const target = $("[autofocus]", el) || focusables(el)[0];
-      target?.focus({ preventScroll: true });
 
       el.onkeydown = (e) => {
         if (e.key === "Escape") {
@@ -222,8 +228,11 @@
       menu.closeAll();
       el.classList.add("is-open");
       trigger.setAttribute("aria-expanded", "true");
-      const items = focusables(el);
-      items[0]?.focus({ preventScroll: true });
+      // The menu starts visibility:hidden; wait for its open state to paint before focusing.
+      requestAnimationFrame(() => {
+        const items = focusables(el);
+        items[0]?.focus({ preventScroll: true });
+      });
       el.dataset.trigger = trigger.dataset.abkMenu;
 
       el.onkeydown = (e) => {

@@ -271,12 +271,6 @@
   background: var(--bg-sunken);
 }
 
-.demo-icon-picker {
-  width: 100%;
-  max-width: 340px;
-  margin-bottom: var(--sp-5);
-}
-
 .icon-cell [data-abk-icon] {
   --icon-size: 24px;
   width: 28px;
