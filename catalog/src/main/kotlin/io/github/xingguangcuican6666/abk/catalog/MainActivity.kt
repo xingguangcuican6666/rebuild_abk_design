@@ -147,7 +147,7 @@ private fun CatalogPage(
         verticalArrangement = Arrangement.spacedBy(32.dp)) {
         item {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                AbkHero("简约，而不空泛", eyebrow = "LUCIDE · 霞鹜文楷",
+                AbkHero("简约，而不空泛", eyebrow = "LUCIDE · 悠哉字体",
                     description = "与网页目录同一份清单：每个组件的每个变体与状态都在这里。状态由调用方持有，示例数据不进入库。",
                     actions = { AbkButton(onOpenPreview, style = AbkButtonStyle.Ghost) { AbkText("从组件预览开始") } })
                 ThemeControls()

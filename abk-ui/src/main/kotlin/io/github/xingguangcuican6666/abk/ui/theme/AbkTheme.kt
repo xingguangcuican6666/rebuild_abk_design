@@ -51,17 +51,19 @@ public object AbkMotion {
 }
 
 public object AbkFonts {
+    /** 悠哉字体（Yozai）: a softer hand-written Han face than WenKai's brush-flavoured Kai. */
     public val Hand: FontFamily = FontFamily(
-        Font(R.font.abk_wenkai_regular, FontWeight.Normal),
-        Font(R.font.abk_wenkai_bold, FontWeight.Bold),
+        Font(R.font.abk_yozai_regular, FontWeight.Normal),
+        Font(R.font.abk_yozai_medium, FontWeight.Medium),
     )
     public val Mono: FontFamily = FontFamily(Font(R.font.abk_wenkai_mono_regular))
 }
 
 public fun abkTypography(fontFamily: FontFamily = AbkFonts.Hand): Typography {
-    fun style(size: Int, line: Int, bold: Boolean = false) = TextStyle(
+    // Bold and Medium both land on the 500 file: a third weight would mean shipping ~2 MB more glyphs.
+    fun style(size: Int, line: Int, accent: Boolean = false) = TextStyle(
         fontFamily = fontFamily, fontSize = size.sp, lineHeight = line.sp,
-        fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal,
+        fontWeight = if (accent) FontWeight.Medium else FontWeight.Normal,
     )
     return Typography(
         displayLarge = style(36, 45, true), displayMedium = style(32, 40, true),

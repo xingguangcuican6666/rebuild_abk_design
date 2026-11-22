@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
  */
 internal enum class CatalogSection(val title: String, val desc: String) {
     Tokens("设计变量", "Material You 从同一个种子色生成浅色与深色。更换种子会更新全页配色，明暗单独控制。"),
-    Typography("字体与排版", "标题带一点笔锋，正文同一家族保证气质统一；等宽用于数值、路径和命令。"),
+    Typography("字体与排版", "悠哉字体笔画偏软，标题用 Medium、正文用 Regular；等宽仍是文楷等宽，用于数值、路径和命令。"),
     Icons("图标", "Lucide 已定稿，与网页共用同一份语义角色；图标跟随文字颜色，导航保持等权。"),
     Buttons("按钮", "一个页面只允许一个主按钮。次级操作用描边或幽灵，破坏性操作配危险色与二次确认。"),
     Forms("表单", "标签始终在框外，错误状态用底色 + 文案双重提示，不依赖颜色单一通道。"),
