@@ -25,6 +25,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
@@ -34,6 +35,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TriStateCheckbox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,6 +51,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.xingguangcuican6666.abk.ui.icons.AbkIcon
 import io.github.xingguangcuican6666.abk.ui.icons.AbkIcons
@@ -189,13 +192,16 @@ public fun AbkCheckbox(
     enabled: Boolean = true,
 ) {
     Row(modifier.fillMaxWidth().defaultMinSize(minHeight = 48.dp)
-        .triStateToggleable(state, enabled = enabled, role = Role.Checkbox, onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically) {
-        TriStateCheckbox(state, null, enabled = enabled, colors = CheckboxDefaults.colors(
-            checkedColor = AbkTheme.colors.accent.color, checkmarkColor = AbkTheme.colors.accent.onColor,
-            uncheckedColor = AbkTheme.colors.lineStrong,
-        ))
-        ChoiceLabel(label, description, enabled, Modifier.weight(1f).padding(vertical = 8.dp))
+        .triStateToggleable(state, enabled = enabled, role = Role.Checkbox, onClick = onClick)
+        .padding(horizontal = 4.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        AbkControl {
+            TriStateCheckbox(state, null, enabled = enabled, colors = CheckboxDefaults.colors(
+                checkedColor = AbkTheme.colors.accent.color, checkmarkColor = AbkTheme.colors.accent.onColor,
+                uncheckedColor = AbkTheme.colors.lineStrong,
+            ))
+        }
+        ChoiceLabel(label, description, enabled, Modifier.weight(1f))
     }
 }
 
@@ -214,14 +220,27 @@ public fun AbkRadioOption(
         shape = AbkShapes.Large, border = if (card) BorderStroke(1.dp, if (selected) c.accent.color else c.line) else null) {
         Row(Modifier.fillMaxWidth().defaultMinSize(minHeight = 48.dp)
             .selectable(selected, enabled = enabled, role = Role.RadioButton, onClick = onClick)
-            .padding(end = 12.dp, top = if (card) 6.dp else 0.dp, bottom = if (card) 6.dp else 0.dp),
-            verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(selected, null, enabled = enabled, colors = RadioButtonDefaults.colors(
-                selectedColor = c.accent.color, unselectedColor = c.lineStrong,
-            ))
-            ChoiceLabel(label, description, enabled, Modifier.weight(1f).padding(vertical = 8.dp))
+            .padding(horizontal = if (card) 16.dp else 4.dp, vertical = if (card) 14.dp else 4.dp),
+            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            // The row is the touch target, so the control keeps its 20dp visual size instead of Material's
+            // 48dp touch box; that box was what shoved the label against the ring in the first place.
+            AbkControl {
+                RadioButton(selected, null, enabled = enabled, colors = RadioButtonDefaults.colors(
+                    selectedColor = c.accent.color, unselectedColor = c.lineStrong,
+                ))
+            }
+            ChoiceLabel(label, description, enabled, Modifier.weight(1f))
         }
     }
+}
+
+/**
+ * Drops Material's minimum interactive size for one control. It is only correct when the enclosing row
+ * already provides the 48dp target, which every ABK choice row does.
+ */
+@Composable
+private fun AbkControl(content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified, content = content)
 }
 
 @Composable
@@ -333,7 +352,7 @@ public fun AbkSegmented(
 
 @Composable
 private fun ChoiceLabel(label: String, description: String?, enabled: Boolean, modifier: Modifier = Modifier) {
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(2.dp)) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
         AbkText(label, color = if (enabled) AbkTheme.colors.ink else AbkTheme.colors.inkFaint)
         if (description != null) AbkText(description, style = MaterialTheme.typography.bodySmall, color = AbkTheme.colors.inkMuted)
     }

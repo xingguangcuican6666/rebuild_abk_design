@@ -1,6 +1,6 @@
 # ABK UI
 
-ABK UI is a reusable Android Jetpack Compose component library based on the finalized static design prototype. It uses LXGW WenKai, Material You semantic roles, and the Lucide SVG subset. The repository retains the original static catalog as well as a native library and a separate native catalog app.
+ABK UI is a reusable Android Jetpack Compose component library based on the finalized static design prototype. It uses Yozai (悠哉字体) for UI text and LXGW WenKai Mono for code, Material You semantic roles, and the Lucide SVG subset. The repository retains the original static catalog as well as a native library and a separate native catalog app.
 
 ## Modules
 

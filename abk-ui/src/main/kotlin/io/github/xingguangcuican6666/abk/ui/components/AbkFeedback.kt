@@ -43,6 +43,7 @@ import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.xingguangcuican6666.abk.ui.icons.AbkIcon
 import io.github.xingguangcuican6666.abk.ui.icons.AbkIcons
@@ -55,16 +56,26 @@ import kotlin.math.sin
 @Composable
 internal fun abkStatusIcon(tone: AbkTone): ImageVector = when (tone) {
     AbkTone.Success -> AbkIcons.Check
-    AbkTone.Warning -> AbkIcons.AlertMark
+    AbkTone.Warning -> AbkIcons.Warning
     AbkTone.Danger -> AbkIcons.Close
-    else -> AbkIcons.InfoMark
+    AbkTone.Info -> AbkIcons.Info
+    else -> AbkIcons.Dot
 }
 
+/**
+ * Outlined tone glyph that names a state. It is drawn without a filled disc so a container that already
+ * carries the tone does not repeat it; neutral has no state to name and keeps the subdued dot badge.
+ */
 @Composable
-internal fun AbkStatusMark(tone: AbkTone, modifier: Modifier = Modifier) {
+internal fun AbkStatusGlyph(tone: AbkTone, modifier: Modifier = Modifier, size: Dp = 24.dp) {
     val status = AbkTheme.colors.status(tone)
-    Box(modifier.size(22.dp).background(status.color, CircleShape), contentAlignment = Alignment.Center) {
-        AbkIcon(abkStatusIcon(tone), null, tint = status.onColor, size = 14.dp)
+    val icon = abkStatusIcon(tone)
+    if (tone == AbkTone.Neutral) {
+        Box(modifier.size(size).background(status.container, CircleShape), contentAlignment = Alignment.Center) {
+            AbkIcon(icon, null, tint = status.color, size = size * 0.6f)
+        }
+    } else {
+        AbkIcon(icon, null, modifier, tint = status.color, size = size)
     }
 }
 
@@ -77,7 +88,8 @@ public fun AbkAlert(
     Surface(modifier.semantics { liveRegion = LiveRegionMode.Polite }, shape = AbkShapes.Medium,
         color = c.container, border = BorderStroke(1.dp, c.color.copy(alpha = 0.3f))) {
         Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            AbkStatusMark(tone, Modifier.padding(top = 2.dp))
+            // The outlined glyph marks the state on top of the tone container, so the tray stays quiet.
+            AbkStatusGlyph(tone, Modifier.padding(top = 2.dp), size = 20.dp)
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 AbkText(title, style = MaterialTheme.typography.titleSmall, color = c.onContainer)
                 AbkText(message, style = MaterialTheme.typography.bodyMedium, color = c.onContainer)

@@ -66,7 +66,8 @@ public fun AbkSnackbarHost(
             color = c.raised, contentColor = c.ink, border = BorderStroke(1.dp, c.line)) {
             Column(Modifier.padding(horizontal = 12.dp, vertical = 10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                    AbkStatusMark(tone)
+                    // Same outlined glyph as alerts and dialogs; neutral falls back to a subdued dot.
+                    AbkStatusGlyph(tone, size = 22.dp)
                     AbkText(data.visuals.message, Modifier.weight(1f), MaterialTheme.typography.bodyMedium)
                     if (data.visuals.withDismissAction) AbkIconButton(AbkIcons.Close, dismissDescription, data::dismiss, size = AbkSize.Small)
                 }

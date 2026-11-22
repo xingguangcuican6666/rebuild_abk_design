@@ -6,8 +6,8 @@
 
 :root {
   /* ---- 字体 ---- */
-  --font-hand: "LXGW WenKai", "Ma Shan Zheng", "Caveat", "Kaiti SC", "STKaiti", "KaiTi", "Noto Serif SC", cursive;
-  --font-ui: "LXGW WenKai", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-hand: "Yozai", "LXGW WenKai", "Ma Shan Zheng", "Caveat", "Kaiti SC", "STKaiti", "KaiTi", "Noto Serif SC", cursive;
+  --font-ui: "Yozai", "LXGW WenKai", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
   --font-mono: "LXGW WenKai Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   --fs-xs: 0.75rem;

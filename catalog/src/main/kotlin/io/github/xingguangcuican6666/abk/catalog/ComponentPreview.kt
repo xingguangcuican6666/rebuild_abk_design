@@ -28,6 +28,7 @@ import io.github.xingguangcuican6666.abk.ui.components.*
 import io.github.xingguangcuican6666.abk.ui.icons.AbkIcon
 import io.github.xingguangcuican6666.abk.ui.icons.AbkIcons
 import io.github.xingguangcuican6666.abk.ui.theme.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -42,6 +43,8 @@ internal fun ComponentPreview(modifier: Modifier, snackbars: AbkSnackbarHostStat
     var validated by rememberSaveable { mutableStateOf(false) }
     var removed by rememberSaveable { mutableStateOf(false) }
     var dialog by rememberSaveable { mutableStateOf(false) }
+    var confirmDialog by rememberSaveable { mutableStateOf(false) }
+    var confirming by rememberSaveable { mutableStateOf(false) }
     var sheet by rememberSaveable { mutableStateOf(false) }
     var menu by rememberSaveable { mutableStateOf(false) }
     // An in-flight coroutine is not restored after recreation; the sample card still is.
@@ -132,6 +135,7 @@ internal fun ComponentPreview(modifier: Modifier, snackbars: AbkSnackbarHostStat
                             ), { feedback("样例已刷新，仅演示菜单反馈") })
                         }
                         AbkButton({ scope.launch { snackbars.show("操作成功（示例）", AbkTone.Success, withDismissAction = true) } }) { Text("成功提示") }
+                        AbkButton({ confirmDialog = true }, style = AbkButtonStyle.Outline) { Text("警告确认") }
                     }
                     AbkText("明暗、取色和字体缩放沿用目录中的主题设置。", style = MaterialTheme.typography.bodySmall,
                         color = AbkTheme.colors.inkMuted)
@@ -156,6 +160,28 @@ internal fun ComponentPreview(modifier: Modifier, snackbars: AbkSnackbarHostStat
             }
         }, style = AbkButtonStyle.Danger) { Text("确认移除") }
     }) { AbkText("只影响当前本地样例。关闭对话框后，可以在底部提示中撤销。") }
+    if (confirmDialog) AbkDialog(if (confirming) "正在关闭校验…" else "关闭签名校验？", {
+        // Dismissal is disabled while the sample action is in flight, so back/outside cannot orphan it.
+        if (!confirming) confirmDialog = false
+    }, tone = AbkTone.Warning, dismissOnBackPress = !confirming, dismissOnClickOutside = !confirming, actions = {
+        AbkButton({ confirmDialog = false }, enabled = !confirming, style = AbkButtonStyle.Ghost) { Text("取消") }
+        AbkButton({
+            confirming = true
+            scope.launch {
+                try {
+                    delay(1200)
+                    feedback("已关闭签名校验（示例），仅影响本地样例")
+                } finally {
+                    confirming = false
+                    confirmDialog = false
+                }
+            }
+        }, enabled = !confirming, loading = confirming, style = AbkButtonStyle.Soft) {
+            Text(if (confirming) "正在关闭" else "关闭校验")
+        }
+    }) {
+        AbkText("关闭后，设备将不再校验安装包的签名一致性。该操作可以随时重新开启。")
+    }
     if (sheet) AbkBottomSheet("预览详情", { sheet = false }, description = "真实组件 · 本地状态",
         actions = { AbkButton({ sheet = false }, style = AbkButtonStyle.Ghost) { Text("关闭") } }) {
         AbkKeyValue("名称", name.ifBlank { "未命名预览" })

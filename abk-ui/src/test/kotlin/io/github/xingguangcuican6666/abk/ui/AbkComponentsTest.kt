@@ -37,6 +37,7 @@ import androidx.compose.ui.test.hasStateDescription
 import androidx.compose.ui.test.isEditable
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -69,6 +70,7 @@ import io.github.xingguangcuican6666.abk.ui.theme.AbkColors
 import io.github.xingguangcuican6666.abk.ui.theme.AbkTheme
 import io.github.xingguangcuican6666.abk.ui.theme.AbkShapes
 import io.github.xingguangcuican6666.abk.ui.theme.AbkSpacing
+import io.github.xingguangcuican6666.abk.ui.theme.AbkTone
 import io.github.xingguangcuican6666.abk.ui.theme.abkSeedColors
 import kotlinx.coroutines.launch
 import org.junit.Assert.assertEquals
@@ -270,6 +272,21 @@ public class AbkComponentsTest {
         compose.onNodeWithContentDescription("关闭对话框").performClick()
         compose.onNodeWithText("对话框内容").assertDoesNotExist()
         compose.onNodeWithText("对话框已关闭").assertExists()
+        compose.runOnIdle { assertEquals(1, dismissals) }
+    }
+
+    @Test public fun dialogToneKeepsTitleHeadingAndCloseAction() {
+        var open by mutableStateOf(true)
+        var dismissals = 0
+        content {
+            if (open) AbkDialog("关闭签名校验？", { open = false; dismissals++ }, tone = AbkTone.Warning) { Text("toned 对话框内容") }
+        }
+        // The tone glyph is decorative, so the title stays a single heading and only the close button is described.
+        compose.onNodeWithText("关闭签名校验？").assertExists()
+        compose.onAllNodesWithContentDescription("关闭对话框").assertCountEquals(1)
+        compose.onNodeWithText("toned 对话框内容").assertExists()
+        compose.onNodeWithContentDescription("关闭对话框").performClick()
+        compose.onNodeWithText("toned 对话框内容").assertDoesNotExist()
         compose.runOnIdle { assertEquals(1, dismissals) }
     }
 

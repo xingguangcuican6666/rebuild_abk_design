@@ -1,13 +1,12 @@
 /* ==========================================================================
    ABK UI · 字体
-   霞鹜文楷（LXGW WenKai）作为手写体主字体，等宽用 LXGW WenKai Mono。
-   这里直接引三个分片入口（常规 / 粗体 / 等宽常规），而不是官方 style.css，
-   可以省掉 light 字重那 97 个分片的定义。
-   分片 CSS 内部按 unicode-range 声明 @font-face，浏览器只下载页面上真正
-   出现的字符所在的 woff2；字体不可用时自动回落到系统楷体，排版不塌。
+   主字体是悠哉字体（Yozai），笔画更软；等宽仍是 LXGW WenKai Mono。
+   悠哉由 scripts/prepare-fonts.py 切成 latin / han 两片本地 woff2，按
+   unicode-range 只下载页面真正用到的字；字体加载前回落系统楷体。
+   文楷分片来自 unpkg，只在本地字体缺失（例如直接拷走 index.html）时兜底。
    @import 必须排在文件最前，后面不要再写规则。
    ========================================================================== */
 
+@import url("fonts-yozai.css");
 @import url("https://unpkg.com/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-regular.css");
-@import url("https://unpkg.com/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-bold.css");
 @import url("https://unpkg.com/lxgw-wenkai-webfont@1.7.0/lxgwwenkaimono-regular.css");
