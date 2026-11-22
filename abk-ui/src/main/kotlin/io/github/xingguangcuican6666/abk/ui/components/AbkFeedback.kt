@@ -56,29 +56,27 @@ import kotlin.math.sin
 @Composable
 internal fun abkStatusIcon(tone: AbkTone): ImageVector = when (tone) {
     AbkTone.Success -> AbkIcons.Check
-    AbkTone.Warning -> AbkIcons.AlertMark
+    AbkTone.Warning -> AbkIcons.Warning
     AbkTone.Danger -> AbkIcons.Close
-    else -> AbkIcons.InfoMark
+    AbkTone.Info -> AbkIcons.Info
+    else -> AbkIcons.Dot
 }
 
-/** Decorative tonal disc; the surrounding text always names the state, so colour is never the only signal. */
-@Composable
-internal fun AbkStatusMark(tone: AbkTone, modifier: Modifier = Modifier, size: Dp = 22.dp) {
-    val status = AbkTheme.colors.status(tone)
-    Box(modifier.size(size).background(status.color, CircleShape), contentAlignment = Alignment.Center) {
-        AbkIcon(abkStatusIcon(tone), null, tint = status.onColor, size = size * 0.64f)
-    }
-}
-
-/** Outlined header glyph; a warning uses the Lucide triangle so the state reads before the title. */
+/**
+ * Outlined tone glyph that names a state. It is drawn without a filled disc so a container that already
+ * carries the tone does not repeat it; neutral has no state to name and keeps the subdued dot badge.
+ */
 @Composable
 internal fun AbkStatusGlyph(tone: AbkTone, modifier: Modifier = Modifier, size: Dp = 24.dp) {
-    val icon = when (tone) {
-        AbkTone.Warning -> AbkIcons.Warning
-        AbkTone.Info -> AbkIcons.Info
-        else -> abkStatusIcon(tone)
+    val status = AbkTheme.colors.status(tone)
+    val icon = abkStatusIcon(tone)
+    if (tone == AbkTone.Neutral) {
+        Box(modifier.size(size).background(status.container, CircleShape), contentAlignment = Alignment.Center) {
+            AbkIcon(icon, null, tint = status.color, size = size * 0.6f)
+        }
+    } else {
+        AbkIcon(icon, null, modifier, tint = status.color, size = size)
     }
-    AbkIcon(icon, null, modifier, tint = AbkTheme.colors.status(tone).color, size = size)
 }
 
 @Composable
