@@ -73,7 +73,11 @@ internal fun AbkStatusMark(tone: AbkTone, modifier: Modifier = Modifier, size: D
 /** Outlined header glyph; a warning uses the Lucide triangle so the state reads before the title. */
 @Composable
 internal fun AbkStatusGlyph(tone: AbkTone, modifier: Modifier = Modifier, size: Dp = 24.dp) {
-    val icon = if (tone == AbkTone.Warning) AbkIcons.Warning else abkStatusIcon(tone)
+    val icon = when (tone) {
+        AbkTone.Warning -> AbkIcons.Warning
+        AbkTone.Info -> AbkIcons.Info
+        else -> abkStatusIcon(tone)
+    }
     AbkIcon(icon, null, modifier, tint = AbkTheme.colors.status(tone).color, size = size)
 }
 
@@ -86,7 +90,8 @@ public fun AbkAlert(
     Surface(modifier.semantics { liveRegion = LiveRegionMode.Polite }, shape = AbkShapes.Medium,
         color = c.container, border = BorderStroke(1.dp, c.color.copy(alpha = 0.3f))) {
         Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            AbkStatusMark(tone, Modifier.padding(top = 2.dp))
+            // The outlined glyph marks the state on top of the tone container, so the tray stays quiet.
+            AbkStatusGlyph(tone, Modifier.padding(top = 2.dp), size = 20.dp)
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 AbkText(title, style = MaterialTheme.typography.titleSmall, color = c.onContainer)
                 AbkText(message, style = MaterialTheme.typography.bodyMedium, color = c.onContainer)
