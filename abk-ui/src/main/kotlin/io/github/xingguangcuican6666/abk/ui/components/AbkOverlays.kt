@@ -45,6 +45,7 @@ import io.github.xingguangcuican6666.abk.ui.icons.AbkIcon
 import io.github.xingguangcuican6666.abk.ui.icons.AbkIcons
 import io.github.xingguangcuican6666.abk.ui.theme.AbkShapes
 import io.github.xingguangcuican6666.abk.ui.theme.AbkTheme
+import io.github.xingguangcuican6666.abk.ui.theme.AbkTone
 
 @Composable
 public fun AbkDialog(
@@ -55,6 +56,7 @@ public fun AbkDialog(
     dismissDescription: String = "关闭对话框",
     dismissOnBackPress: Boolean = true,
     dismissOnClickOutside: Boolean = true,
+    tone: AbkTone? = null,
     actions: @Composable () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -68,6 +70,8 @@ public fun AbkDialog(
                 contentColor = c.ink, border = BorderStroke(1.dp, c.line)) {
                 Column {
                     Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        // The mark sits beside the title, not above it, so long titles wrap under themselves.
+                        if (tone != null) AbkStatusMark(tone, Modifier.padding(end = 12.dp), size = 28.dp)
                         AbkText(title, Modifier.weight(1f).semantics { heading() }, MaterialTheme.typography.titleLarge)
                         AbkIconButton(AbkIcons.Close, dismissDescription, onDismissRequest)
                     }

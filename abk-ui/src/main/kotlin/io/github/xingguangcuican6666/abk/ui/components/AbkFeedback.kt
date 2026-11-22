@@ -43,6 +43,7 @@ import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.xingguangcuican6666.abk.ui.icons.AbkIcon
 import io.github.xingguangcuican6666.abk.ui.icons.AbkIcons
@@ -60,11 +61,12 @@ internal fun abkStatusIcon(tone: AbkTone): ImageVector = when (tone) {
     else -> AbkIcons.InfoMark
 }
 
+/** Decorative tonal disc; the surrounding text always names the state, so colour is never the only signal. */
 @Composable
-internal fun AbkStatusMark(tone: AbkTone, modifier: Modifier = Modifier) {
+internal fun AbkStatusMark(tone: AbkTone, modifier: Modifier = Modifier, size: Dp = 22.dp) {
     val status = AbkTheme.colors.status(tone)
-    Box(modifier.size(22.dp).background(status.color, CircleShape), contentAlignment = Alignment.Center) {
-        AbkIcon(abkStatusIcon(tone), null, tint = status.onColor, size = 14.dp)
+    Box(modifier.size(size).background(status.color, CircleShape), contentAlignment = Alignment.Center) {
+        AbkIcon(abkStatusIcon(tone), null, tint = status.onColor, size = size * 0.64f)
     }
 }
 

@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: [main, feat/compose-components]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web:
+    name: Web catalog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check assets/js/abk-ui.js
+          node --check assets/js/demo-palette.js
+          node --check assets/vendor/icons/icon-data.js
+
+      - name: Check icon vectors are generated
+        run: |
+          python3 scripts/generate-compose-icons.py
+          git diff --exit-code -- abk-ui/src/main/kotlin/io/github/xingguangcuican6666/abk/ui/icons/AbkIcons.kt
+
+  android:
+    name: Android library and catalog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      # JDK 21 is the default for Gradle; 17 stays available for the Java 17 toolchain
+      # and 21 is what abk-ui/build.gradle.kts pins for the Robolectric test launcher.
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: |
+            21
+            17
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager --install "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build library and catalog
+        run: ./gradlew --no-daemon :abk-ui:assembleRelease :catalog:assembleDebug
+
+      - name: Run library host tests
+        run: ./gradlew --no-daemon :abk-ui:testDebugUnitTest
+
+      - name: Lint
+        run: ./gradlew --no-daemon :abk-ui:lintDebug :catalog:lintDebug
+
+      - name: Upload debug catalog APK
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: catalog-debug-apk
+          path: catalog/build/outputs/apk/debug/*.apk
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload test and lint reports
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: android-reports
+          path: |
+            abk-ui/build/reports/**
+            catalog/build/reports/**
+            */build/test-results/**
+          if-no-files-found: ignore
+          retention-days: 7

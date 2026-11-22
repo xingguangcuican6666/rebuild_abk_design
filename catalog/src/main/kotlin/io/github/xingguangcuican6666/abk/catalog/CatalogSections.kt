@@ -250,7 +250,7 @@ private fun OverlaySamples(snackbars: AbkSnackbarHostState, feedback: (String) -
             }
         }, enabled = !undoPending) { Text("带撤销 Toast") }
     }
-    if (dialog) AbkDialog("删除构建记录？", { dialog = false }, wide = wide,
+    if (dialog) AbkDialog("删除构建记录？", { dialog = false }, wide = wide, tone = AbkTone.Warning,
         actions = {
             AbkButton({ dialog = false }, style = AbkButtonStyle.Ghost) { Text("取消") }
             AbkButton({ dialog = false; feedback("对话框已关闭，记录已删除") }, style = AbkButtonStyle.Danger) { Text("删除") }
