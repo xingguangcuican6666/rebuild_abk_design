@@ -582,9 +582,7 @@ private fun OverlaySamples(snackbars: AbkSnackbarHostState, feedback: (String) -
             }
         }
         CatalogBlock("提示排队") {
-            AbkButton({
-                snackbars.show("提示一", withDismissAction = true)
-            }) { Text("查看 Toast 示例") }
+            AbkButton({ snackbars.show("提示一", withDismissAction = true) }) { Text("查看 Toast 示例") }
         }
     }
     if (dialog) AbkDialog(if (toned) "关闭签名校验？" else "删除构建记录？", { dialog = false }, wide = wide,

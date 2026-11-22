@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import io.github.xingguangcuican6666.abk.ui.components.*
+import io.github.xingguangcuican6666.abk.ui.icons.AbkIcon
 import io.github.xingguangcuican6666.abk.ui.icons.AbkIcons
 import io.github.xingguangcuican6666.abk.ui.theme.*
 import kotlinx.coroutines.launch
@@ -62,36 +63,37 @@ internal fun AbkCatalog() {
             seed = when (theme.seed) { "green" -> Color(0xFF526A43); "purple" -> Color(0xFF795282); else -> AbkDefaultSeed },
             reduceMotion = theme.reduceMotion) {
             CompositionLocalProvider(LocalCatalogTheme provides themeState) {
-            val snackbars = rememberAbkSnackbarHostState()
-            val scope = rememberCoroutineScope()
-            val feedback: (String) -> Unit = { message -> scope.launch { snackbars.show(message) }; Unit }
-            val catalogList = rememberLazyListState()
-            AbkScaffold(
-                modifier = Modifier.fillMaxSize(),
-                topBar = { AbkTopBar("ABK UI", subtitle = when (page) { "preview" -> "组件预览 · 本地交互"; "build" -> "构建示例 · 无真实任务"; "modules" -> "模块示例 · 本地交互"; else -> "原生 Compose 组件目录" },
-                    actions = if (page == "catalog") {
-                        { AbkIconButton(AbkIcons.Controls, "分类列表", { sectionsOpen = true }) }
-                    } else emptyActions) },
-                bottomBar = { AbkBottomNavigation(listOf(
-                    AbkNavigationItem("catalog", "组件", AbkIcons.Controls), AbkNavigationItem("preview", "预览", AbkIcons.Home),
-                    AbkNavigationItem("build", "构建", AbkIcons.Build), AbkNavigationItem("modules", "模块", AbkIcons.Modules)), page, { page = it }) },
-                snackbarHost = { AbkSnackbarHost(snackbars) },
-            ) { padding ->
-                when (page) {
-                    "preview" -> ComponentPreview(Modifier.padding(padding).consumeWindowInsets(padding), snackbars, { page = "catalog" })
-                    "build" -> BuildExample(Modifier.padding(padding).consumeWindowInsets(padding), snackbars)
-                    "modules" -> ModulesExample(Modifier.padding(padding).consumeWindowInsets(padding), snackbars)
-                    else -> CatalogPage(
-                        modifier = Modifier.padding(padding).consumeWindowInsets(padding), listState = catalogList,
-                        section, { section = it; sectionsOpen = false }, snackbars, feedback,
-                        onOpenPreview = { page = "preview" }, onOpenBuild = { page = "build" }, onOpenModules = { page = "modules" })
+                val snackbars = rememberAbkSnackbarHostState()
+                val scope = rememberCoroutineScope()
+                val feedback: (String) -> Unit = { message -> scope.launch { snackbars.show(message) }; Unit }
+                val catalogList = rememberLazyListState()
+                AbkScaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = { AbkTopBar("ABK UI", subtitle = when (page) { "preview" -> "组件预览 · 本地交互"; "build" -> "构建示例 · 无真实任务"; "modules" -> "模块示例 · 本地交互"; else -> "原生 Compose 组件目录" },
+                        actions = if (page == "catalog") {
+                            { AbkIconButton(AbkIcons.Controls, "分类列表", { sectionsOpen = true }) }
+                        } else emptyActions) },
+                    bottomBar = { AbkBottomNavigation(listOf(
+                        AbkNavigationItem("catalog", "组件", AbkIcons.Controls), AbkNavigationItem("preview", "预览", AbkIcons.Home),
+                        AbkNavigationItem("build", "构建", AbkIcons.Build), AbkNavigationItem("modules", "模块", AbkIcons.Modules)), page, { page = it }) },
+                    snackbarHost = { AbkSnackbarHost(snackbars) },
+                ) { padding ->
+                    when (page) {
+                        "preview" -> ComponentPreview(Modifier.padding(padding).consumeWindowInsets(padding), snackbars, { page = "catalog" })
+                        "build" -> BuildExample(Modifier.padding(padding).consumeWindowInsets(padding), snackbars)
+                        "modules" -> ModulesExample(Modifier.padding(padding).consumeWindowInsets(padding), snackbars)
+                        else -> CatalogPage(
+                            modifier = Modifier.padding(padding).consumeWindowInsets(padding), listState = catalogList,
+                            section, { section = it; sectionsOpen = false }, snackbars, feedback,
+                            onOpenPreview = { page = "preview" }, onOpenBuild = { page = "build" }, onOpenModules = { page = "modules" })
+                    }
                 }
-            }
-            if (sectionsOpen) AbkBottomSheet("分类", { sectionsOpen = false }) {
-                AbkList(plain = true) {
-                    CatalogSectionChoices.forEach { (id, title) ->
-                        AbkListItem(title, onClick = { section = id; sectionsOpen = false },
-                            trailing = if (section == id) { { AbkIcon(AbkIcons.Check, "当前分类") } } else null)
+                if (sectionsOpen) AbkBottomSheet("分类", { sectionsOpen = false }) {
+                    AbkList(plain = true) {
+                        CatalogSectionChoices.forEach { (id, title) ->
+                            AbkListItem(title, onClick = { section = id; sectionsOpen = false },
+                                trailing = if (section == id) { { AbkIcon(AbkIcons.Check, "当前分类") } } else null)
+                        }
                     }
                 }
             }
