@@ -51,13 +51,18 @@ jobs:
             21
             17
 
-      # ubuntu-latest ships a preinstalled Android SDK at $ANDROID_HOME. Only add the
-      # packages this project compiles against; setup-android's cmdline-tools download is
-      # not needed and its default version fails license acceptance non-interactively.
+      # ubuntu-latest ships a preinstalled Android SDK. Its sdkmanager is not always on
+      # PATH on this image, and setup-android's cmdline-tools download fails its own
+      # non-interactive install here, so locate the bundled sdkmanager directly.
       - name: Install Android SDK packages
         run: |
-          yes | sdkmanager --licenses > /dev/null
-          sdkmanager --install "platforms;android-36" "build-tools;36.0.0"
+          set -euo pipefail
+          sdk="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          manager="$(ls -d "$sdk"/cmdline-tools/*/bin/sdkmanager | sort -V | tail -n 1)"
+          echo "ANDROID_HOME=$sdk" >> "$GITHUB_ENV"
+          echo "Using $manager"
+          yes | "$manager" --licenses > /dev/null || true
+          "$manager" --install "platforms;android-36" "build-tools;36.0.0"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
