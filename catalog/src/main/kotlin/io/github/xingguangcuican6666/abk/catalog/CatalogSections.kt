@@ -558,6 +558,7 @@ private fun ToastSamples(snackbars: AbkSnackbarHostState, feedback: (String) -> 
 
 @Composable
 private fun OverlaySamples(snackbars: AbkSnackbarHostState, feedback: (String) -> Unit) {
+    val scope = rememberCoroutineScope()
     var dialog by rememberSaveable { mutableStateOf(false) }
     var wide by rememberSaveable { mutableStateOf(false) }
     var toned by rememberSaveable { mutableStateOf(false) }
@@ -582,7 +583,7 @@ private fun OverlaySamples(snackbars: AbkSnackbarHostState, feedback: (String) -
             }
         }
         CatalogBlock("提示排队") {
-            AbkButton({ snackbars.show("提示一", withDismissAction = true) }) { Text("查看 Toast 示例") }
+            AbkButton({ scope.launch { snackbars.show("提示一", withDismissAction = true) } }) { Text("查看 Toast 示例") }
         }
     }
     if (dialog) AbkDialog(if (toned) "关闭签名校验？" else "删除构建记录？", { dialog = false }, wide = wide,

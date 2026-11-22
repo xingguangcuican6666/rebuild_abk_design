@@ -62,7 +62,7 @@ internal fun AbkCatalog() {
         AbkTheme(darkTheme = dark, colorSource = if (theme.source == "system") AbkColorSource.System else AbkColorSource.Seed,
             seed = when (theme.seed) { "green" -> Color(0xFF526A43); "purple" -> Color(0xFF795282); else -> AbkDefaultSeed },
             reduceMotion = theme.reduceMotion) {
-            CompositionLocalProvider(LocalCatalogTheme provides themeState) {
+            CompositionLocalProvider(LocalCatalogTheme provides theme) {
                 val snackbars = rememberAbkSnackbarHostState()
                 val scope = rememberCoroutineScope()
                 val feedback: (String) -> Unit = { message -> scope.launch { snackbars.show(message) }; Unit }
