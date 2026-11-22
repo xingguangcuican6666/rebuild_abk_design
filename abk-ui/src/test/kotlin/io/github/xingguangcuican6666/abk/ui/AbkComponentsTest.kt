@@ -275,9 +275,10 @@ public class AbkComponentsTest {
     }
 
     @Test public fun dialogToneKeepsTitleHeadingAndCloseAction() {
+        var open by mutableStateOf(true)
         var dismissals = 0
         content {
-            AbkDialog("关闭签名校验？", { dismissals++ }, tone = AbkTone.Warning) { Text("toned 对话框内容") }
+            if (open) AbkDialog("关闭签名校验？", { open = false; dismissals++ }, tone = AbkTone.Warning) { Text("toned 对话框内容") }
         }
         compose.onNodeWithText("toned 对话框内容").assertExists()
         compose.onNodeWithContentDescription("关闭对话框").performClick()
