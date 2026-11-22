@@ -70,6 +70,13 @@ internal fun AbkStatusMark(tone: AbkTone, modifier: Modifier = Modifier, size: D
     }
 }
 
+/** Outlined header glyph; a warning uses the Lucide triangle so the state reads before the title. */
+@Composable
+internal fun AbkStatusGlyph(tone: AbkTone, modifier: Modifier = Modifier, size: Dp = 24.dp) {
+    val icon = if (tone == AbkTone.Warning) AbkIcons.Warning else abkStatusIcon(tone)
+    AbkIcon(icon, null, modifier, tint = AbkTheme.colors.status(tone).color, size = size)
+}
+
 @Composable
 public fun AbkAlert(
     title: String, message: String, modifier: Modifier = Modifier, tone: AbkTone = AbkTone.Info,

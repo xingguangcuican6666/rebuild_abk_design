@@ -37,6 +37,7 @@ import androidx.compose.ui.test.hasStateDescription
 import androidx.compose.ui.test.isEditable
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -280,6 +281,9 @@ public class AbkComponentsTest {
         content {
             if (open) AbkDialog("关闭签名校验？", { open = false; dismissals++ }, tone = AbkTone.Warning) { Text("toned 对话框内容") }
         }
+        // The tone glyph is decorative, so the title stays a single heading and only the close button is described.
+        compose.onNodeWithText("关闭签名校验？").assertExists()
+        compose.onAllNodesWithContentDescription("关闭对话框").assertCountEquals(1)
         compose.onNodeWithText("toned 对话框内容").assertExists()
         compose.onNodeWithContentDescription("关闭对话框").performClick()
         compose.onNodeWithText("toned 对话框内容").assertDoesNotExist()

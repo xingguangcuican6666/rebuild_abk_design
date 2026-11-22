@@ -71,7 +71,8 @@ public fun AbkDialog(
                 Column {
                     Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                         // The mark sits beside the title, not above it, so long titles wrap under themselves.
-                        if (tone != null) AbkStatusMark(tone, Modifier.padding(end = 12.dp), size = 28.dp)
+                        // It is outlined rather than a filled disc so the glyph, not a coloured badge, names the state.
+                        if (tone != null) AbkStatusGlyph(tone, Modifier.padding(end = 10.dp), size = 24.dp)
                         AbkText(title, Modifier.weight(1f).semantics { heading() }, MaterialTheme.typography.titleLarge)
                         AbkIconButton(AbkIcons.Close, dismissDescription, onDismissRequest)
                     }
