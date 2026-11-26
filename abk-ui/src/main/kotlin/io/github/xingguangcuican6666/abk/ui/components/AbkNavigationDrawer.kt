@@ -14,6 +14,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -23,15 +24,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectable
@@ -44,6 +43,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -58,7 +58,11 @@ import androidx.compose.ui.unit.dp
 import io.github.xingguangcuican6666.abk.ui.icons.AbkIcon
 import io.github.xingguangcuican6666.abk.ui.theme.AbkMotion
 import io.github.xingguangcuican6666.abk.ui.theme.AbkShapes
+import io.github.xingguangcuican6666.abk.ui.theme.AbkSpacing
 import io.github.xingguangcuican6666.abk.ui.theme.AbkTheme
+
+/** Side navigation is wider than the old 240dp rail so labels and headers breathe. */
+private val DrawerWidth = 280.dp
 
 /**
  * Side navigation, the wide-screen counterpart of [AbkBottomNavigation].
@@ -70,9 +74,14 @@ import io.github.xingguangcuican6666.abk.ui.theme.AbkTheme
  *    while [open]; the rest of the screen is a scrim that closes it, and back
  *    closes it first (with the predictive-back gesture where the system offers it).
  *
- * The equal-weight rule carries over: selection never changes the icon, font, colour
- * or hit box; only the 2dp start-edge pill appears. The drawer never persists whether
- * it is open — the host owns that, same as [AbkTheme] owns no preferences.
+ * Selection follows the web `.toc__link.is-active`: the row gets the `accent-soft` fill and
+ * `accent-soft-ink` foreground, while the icon, type scale and hit box stay identical to
+ * every other destination. Rows use `labelMedium` (14sp, the ABK nav size) and carry a
+ * press state so a tap visibly lands.
+ *
+ * [header] is the brand/context slot above the destinations; [footer] holds the low
+ * frequency actions. The drawer never persists whether it is open — the host owns that,
+ * same as [AbkTheme] owns no preferences.
  */
 @Composable
 public fun AbkNavigationDrawer(
@@ -106,14 +115,14 @@ public fun AbkNavigationDrawer(
     val reduceMotion = AbkTheme.reduceMotion
     val duration = if (reduceMotion) 0 else AbkMotion.Base
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-    // Slide from the start edge: positive offset in LTR, negative in RTL.
-    val from = { fraction: Int -> if (rtl) -fraction else fraction }
+    // Start edge is left in LTR and right in RTL: the panel begins fully outside it.
+    val offScreen = { fraction: Int -> if (rtl) fraction else -fraction }
     val slideIn: EnterTransition =
         if (reduceMotion) fadeIn(tween(0))
-        else slideInHorizontally(tween(duration, easing = FastOutSlowInEasing)) { from(it) }
+        else slideInHorizontally(tween(duration, easing = FastOutSlowInEasing)) { offScreen(it) }
     val slideOut: ExitTransition =
         if (reduceMotion) fadeOut(tween(0))
-        else slideOutHorizontally(tween(duration, easing = FastOutSlowInEasing)) { from(it) }
+        else slideOutHorizontally(tween(duration, easing = FastOutSlowInEasing)) { offScreen(it) }
 
     val scrimInteractions = remember { MutableInteractionSource() }
     val focusRequester = remember { FocusRequester() }
@@ -156,18 +165,32 @@ private fun DrawerPanel(
 ) {
     val c = AbkTheme.colors
     Column(
-        modifier.width(240.dp).fillMaxHeight().background(c.raised)
+        modifier.width(DrawerWidth).fillMaxHeight().background(c.raised)
             .windowInsetsPadding(windowInsets).semantics { this.paneTitle = paneTitle },
     ) {
-        header?.invoke(this)
-        Column(Modifier.fillMaxWidth().selectableGroup().padding(horizontal = 8.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        if (header != null) {
+            Column(
+                Modifier.fillMaxWidth()
+                    .padding(start = AbkSpacing.Xl, end = AbkSpacing.Xl, top = AbkSpacing.Xl, bottom = AbkSpacing.Lg),
+                verticalArrangement = Arrangement.spacedBy(AbkSpacing.Md),
+                content = header,
+            )
+            AbkDivider()
+        }
+        Column(
+            Modifier.fillMaxWidth().selectableGroup()
+                .padding(horizontal = AbkSpacing.Md, vertical = AbkSpacing.Md),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
             items.forEach { item -> DrawerRow(item, item.id == selectedId, onSelect) }
         }
         Spacer(Modifier.weight(1f))
         if (footer != null) {
             AbkDivider()
-            Column(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp), content = footer)
+            Column(
+                Modifier.fillMaxWidth().padding(horizontal = AbkSpacing.Sm, vertical = AbkSpacing.Sm),
+                content = footer,
+            )
         }
     }
 }
@@ -177,26 +200,30 @@ private fun DrawerRow(item: AbkNavigationItem, selected: Boolean, onSelect: (Str
     val c = AbkTheme.colors
     val interactions = remember(item.id) { MutableInteractionSource() }
     val focused by interactions.collectIsFocusedAsState()
-    val foreground = if (item.enabled) c.inkMuted else c.inkFaint
-    Box(
-        Modifier.fillMaxWidth().abkFocusBorder(focused, foreground)
-            .selectable(selected, interactions, indication = null, enabled = item.enabled, role = Role.Tab) { onSelect(item.id) },
+    val pressed by interactions.collectIsPressedAsState()
+    // Same foreground as the web `.toc__link.is-active`: the accent container's ink.
+    val foreground = when {
+        !item.enabled -> c.inkFaint
+        selected -> c.accent.onContainer
+        else -> c.inkMuted
+    }
+    val background = when {
+        selected -> c.accent.container
+        pressed -> c.sunken
+        else -> Color.Transparent
+    }
+    Row(
+        Modifier.fillMaxWidth().clip(AbkShapes.Small).background(background)
+            .abkFocusBorder(focused, foreground)
+            .selectable(selected, interactions, indication = null, enabled = item.enabled, role = Role.Tab) { onSelect(item.id) }
+            .defaultMinSize(minHeight = 48.dp)
+            .padding(horizontal = AbkSpacing.Md, vertical = AbkSpacing.Sm),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(AbkSpacing.Md),
     ) {
-        Row(
-            Modifier.fillMaxWidth().defaultMinSize(minHeight = 48.dp).padding(horizontal = 8.dp, vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            AbkIcon(item.icon, null, tint = foreground, size = 22.dp)
-            Text(item.label, style = MaterialTheme.typography.labelSmall, color = foreground)
-        }
-        // Selection is a shape, not a colour swap: the row's text and icon stay put.
-        if (selected) {
-            Box(
-                Modifier.align(Alignment.CenterStart).size(2.dp, 24.dp)
-                    .background(c.accent.color, AbkShapes.Pill),
-            )
-        }
+        AbkIcon(item.icon, null, tint = foreground, size = 22.dp)
+        // ABK navigation type size (--fs-sm): 14sp medium, the same as AbkTabs.
+        Text(item.label, style = MaterialTheme.typography.labelMedium, color = foreground)
     }
 }
 
