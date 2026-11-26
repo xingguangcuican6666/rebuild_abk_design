@@ -29,6 +29,8 @@ dependencies {
     api(libs.compose.ui)
     api(libs.compose.foundation)
     api(libs.compose.material3)
+    // PredictiveBackHandler + BackHandler for the modal drawer's dismiss gestures.
+    api(libs.activity.compose)
     implementation(libs.color.utilities)
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)

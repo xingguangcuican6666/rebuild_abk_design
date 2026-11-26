@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -52,7 +54,7 @@ internal enum class CatalogSection(val title: String, val desc: String) {
     Forms("表单", "标签始终在框外，错误状态用底色 + 文案双重提示，不依赖颜色单一通道。"),
     Toggles("开关与选择", "开关用于立即生效的设置；需要提交的选择用勾选或卡片式单选。"),
     Segmented("分段控件", "用于 2–4 个互斥视图的快速切换，比下拉更直观。"),
-    Navigation("导航", "移动端主结构是吸顶栏 + 底部导航；顶部栏滚动后才出现分隔线。"),
+    Navigation("导航", "手机用吸顶栏 + 底部导航，宽屏换成常驻侧边栏；窄屏侧边栏以抽屉滑出。顶部栏滚动后才出现分隔线。"),
     Collections("卡片、列表与标签", "卡片用普通面色承载内容，徽标与标签只在状态处着色。"),
     Data("数据展示", "统计、键值、代码与表格；数值用等宽字体避免对齐跳动。"),
     Sequence("步骤与时间线", "构建流程的进度与历史，完成、当前、待处理同时用图标和文字表达。"),
@@ -367,6 +369,7 @@ private fun NavigationSamples(feedback: (String) -> Unit, onOpenBuild: () -> Uni
                 AbkNavigationItem("modules", "模块", AbkIcons.Modules), AbkNavigationItem("settings", "设置", AbkIcons.Settings),
                 AbkNavigationItem("more", "更多", AbkIcons.More)), wide, { wide = it })
         }
+        SideNavigationSample(feedback)
         AbkCluster {
             AbkButton(onOpenBuild, style = AbkButtonStyle.Ghost) { Text("构建页示例") }
             AbkButton(onOpenModules, style = AbkButtonStyle.Ghost) { Text("模块页示例") }
@@ -661,4 +664,34 @@ private fun DarkPreview() {
 @Composable
 private fun TokensPreview() {
     AbkTheme(colorSource = AbkColorSource.Seed, reduceMotion = true) { TokenSamples() }
+}
+
+@Composable
+private fun SideNavigationSample(feedback: (String) -> Unit) {
+    var sideOpen by rememberSaveable { mutableStateOf(false) }
+    var sidePermanent by rememberSaveable { mutableStateOf(false) }
+    var sideSelected by rememberSaveable { mutableStateOf("home") }
+    CatalogBlock("侧边导航 · 滑出 / 常驻") {
+        AbkSegmented(listOf(AbkOption("modal", "滑出抽屉"), AbkOption("permanent", "常驻侧栏")),
+            if (sidePermanent) "permanent" else "modal", { sidePermanent = it == "permanent" }, label = "侧边导航形态")
+        Box(Modifier.fillMaxWidth().height(280.dp).border(1.dp, AbkTheme.colors.line, AbkShapes.Medium).clip(AbkShapes.Medium)) {
+            AbkNavigationDrawer(
+                items = listOf(AbkNavigationItem("home", "首页", AbkIcons.Home), AbkNavigationItem("build", "构建", AbkIcons.Build),
+                    AbkNavigationItem("modules", "模块", AbkIcons.Modules), AbkNavigationItem("settings", "设置", AbkIcons.Settings)),
+                selectedId = sideSelected, onSelect = { sideSelected = it; if (!sidePermanent) sideOpen = false },
+                open = if (sidePermanent) true else sideOpen, onOpenChange = { sideOpen = it },
+                permanent = sidePermanent,
+                windowInsets = WindowInsets(0, 0, 0, 0),
+                footer = {
+                    AbkListItem("设置", leading = { AbkIcon(AbkIcons.Settings, null) }, onClick = { feedback("设置") })
+                },
+            ) {
+                Column(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    AbkHeading("内容区")
+                    AbkText("侧边栏不持久化展开状态，由宿主持有。", color = AbkTheme.colors.inkMuted)
+                    if (!sidePermanent) AbkButton({ sideOpen = true }) { Text("打开侧边栏") }
+                }
+            }
+        }
+    }
 }
